@@ -1,4 +1,4 @@
-/* Layout e componentes do Cafezinho. Ritmo de espaçamento: 4/8/12/16/24/32/48. */
+/* Layout e componentes do Cafezinho ESL. Ritmo de espaçamento: 4/8/12/16/24/32/48. */
 
 .app {
   min-height: 100vh;
@@ -67,6 +67,10 @@
   display: block;
   height: 32px;
   width: auto;
+}
+
+.print-brand {
+  display: none;
 }
 
 .brand__name {
@@ -940,6 +944,15 @@ select.input {
 
 /* Em telas estreitas, ações de linha mostram só ícone; o nome acessível vem do aria-label. */
 @media (max-width: 519px) {
+  .brand {
+    gap: var(--space-2);
+    font-size: 16px;
+  }
+
+  .brand__name {
+    padding-left: var(--space-2);
+  }
+
   .row__actions .btn__text {
     position: absolute;
     width: 1px;
@@ -1015,6 +1028,13 @@ select.input {
   /* Mostra as duas visões na impressão, mesmo a aba inativa. */
   .tabs__panel[hidden] {
     display: block !important;
+  }
+
+  .print-brand {
+    display: block;
+    margin-bottom: 8pt;
+    font-size: 12pt;
+    font-weight: 700;
   }
 
   .tabs__panel::before {

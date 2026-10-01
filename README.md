@@ -1,6 +1,6 @@
-# Cafezinho
+# Cafezinho ESL
 
-O Cafezinho sorteia quem leva o quê no café da equipe. Frontend React 19 + TypeScript + Vite, sem backend:
+O Cafezinho ESL sorteia quem leva o quê no café da equipe. Frontend React 19 + TypeScript + Vite, sem backend:
 os dados ficam no `localStorage` do navegador.
 
 ## Comandos

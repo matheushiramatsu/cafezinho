@@ -250,13 +250,14 @@ export default function App() {
         <div className="topbar__inner">
           <p className="brand">
             <img className="brand__logo" src={eslLogo} alt="ESL" width={69} height={32} />
-            <span className="brand__name">Cafezinho</span>
+            <span className="brand__name">Cafezinho ESL</span>
           </p>
           <ThemeToggle theme={theme} onChange={setTheme} />
         </div>
       </header>
 
       <main id="main" className="container">
+        <p className="print-brand">Cafezinho ESL</p>
         <section className="intro" aria-labelledby="intro-title">
           <h1 id="intro-title">Quem leva o quê no café?</h1>
           <p className="intro__text">
