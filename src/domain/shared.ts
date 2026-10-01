@@ -1,5 +1,5 @@
 import { createState, reducer, type Action, type AppState } from './state'
-import { emptyData } from './storage'
+import { emptyData, sanitizeData } from './storage'
 import type { StoredData } from './types'
 
 export interface SharedDocument { revision: number; data: StoredData }
@@ -9,6 +9,7 @@ export interface SharedSnapshot {
   status: SyncStatus
   ready: boolean
   revision: number
+  problem: string | null
 }
 
 export function storedData(state: AppState): StoredData {
@@ -19,16 +20,44 @@ export function storedData(state: AppState): StoredData {
 }
 
 export class ConflictError extends Error {}
+export class SharedServiceError extends Error {}
 export interface SharedTransport {
   read(): Promise<SharedDocument>
   write(document: SharedDocument): Promise<SharedDocument>
 }
 
+async function readResponse(response: Response): Promise<SharedDocument> {
+  if (response.status === 404 || !response.headers.get('content-type')?.includes('application/json')) {
+    throw new SharedServiceError('O serviço de dados não está disponível neste endereço. Entre em contato com quem mantém a aplicação.')
+  }
+  let value: unknown
+  try { value = await response.json() }
+  catch { throw new SharedServiceError('O serviço de dados retornou uma resposta inválida. Tente novamente mais tarde.') }
+  if (!response.ok) {
+    if (typeof value === 'object' && value !== null && 'code' in value && value.code === 'database_not_configured') {
+      throw new SharedServiceError('O serviço de dados ainda não foi configurado para este endereço. Entre em contato com quem mantém a aplicação.')
+    }
+    throw new SharedServiceError('O serviço de dados está indisponível. Tente novamente mais tarde.')
+  }
+  if (typeof value !== 'object' || value === null || !('revision' in value) || !('data' in value)
+      || !Number.isSafeInteger(value.revision) || Number(value.revision) < 0
+      || typeof value.data !== 'object' || value.data === null
+      || !('participants' in value.data) || !Array.isArray(value.data.participants)
+      || !('items' in value.data) || !Array.isArray(value.data.items)
+      || !('history' in value.data) || !Array.isArray(value.data.history)
+      || !('coffeeDate' in value.data) || typeof value.data.coffeeDate !== 'string'
+      || !('currentResultId' in value.data) || (value.data.currentResultId !== null && typeof value.data.currentResultId !== 'string')) {
+    throw new SharedServiceError('O serviço de dados retornou uma resposta inválida. Tente novamente mais tarde.')
+  }
+  const sanitized = sanitizeData(value.data)
+  if (sanitized.dropped > 0) throw new SharedServiceError('O serviço de dados retornou uma resposta inválida. Tente novamente mais tarde.')
+  return { revision: Number(value.revision), data: sanitized.data }
+}
+
 export const httpTransport: SharedTransport = {
   async read() {
     const response = await fetch('/api/data', { cache: 'no-store', signal: AbortSignal.timeout(10000) })
-    if (!response.ok) throw new Error('Não foi possível carregar os dados.')
-    return response.json() as Promise<SharedDocument>
+    return readResponse(response)
   },
   async write(document) {
     const response = await fetch('/api/data', {
@@ -36,14 +65,13 @@ export const httpTransport: SharedTransport = {
       body: JSON.stringify(document), signal: AbortSignal.timeout(10000),
     })
     if (response.status === 409) throw new ConflictError()
-    if (!response.ok) throw new Error('Não foi possível salvar os dados.')
-    return response.json() as Promise<SharedDocument>
+    return readResponse(response)
   },
 }
 
 /** Escritas em série, controle de versão e preservação do rascunho em caso de falha. */
 export class SharedStore {
-  private snapshot: SharedSnapshot = { state: createState(emptyData()), status: 'loading', ready: false, revision: 0 }
+  private snapshot: SharedSnapshot = { state: createState(emptyData()), status: 'loading', ready: false, revision: 0, problem: null }
   private listeners = new Set<() => void>()
   private dirty = false
   private writing = false
@@ -86,7 +114,7 @@ export class SharedStore {
     this.writing = true
     const generation = this.generation
     const document = { revision: this.snapshot.revision, data: storedData(this.snapshot.state) }
-    this.update({ status: 'saving' })
+    this.update({ status: 'saving', problem: null })
     try {
       let saved: SharedDocument
       try {
@@ -99,9 +127,9 @@ export class SharedStore {
         saved = current
       }
       this.dirty = generation !== this.generation
-      this.update({ revision: saved.revision, status: this.dirty ? 'saving' : 'saved' })
+      this.update({ revision: saved.revision, status: this.dirty ? 'saving' : 'saved', problem: null })
     } catch (error) {
-      this.update({ status: error instanceof ConflictError ? 'conflict' : 'offline' })
+      this.update({ status: error instanceof ConflictError ? 'conflict' : 'offline', problem: error instanceof SharedServiceError ? error.message : null })
     } finally {
       this.writing = false
     }
@@ -119,10 +147,10 @@ export class SharedStore {
       const changed = !this.snapshot.ready || document.revision !== this.snapshot.revision
       this.update({
         ...(changed ? { state: createState(document.data) } : {}),
-        revision: document.revision, ready: true, status: 'saved',
+        revision: document.revision, ready: true, status: 'saved', problem: null,
       })
-    } catch {
-      if (!this.dirty && this.generation === generation) this.update({ status: 'offline' })
+    } catch (error) {
+      if (!this.dirty && this.generation === generation) this.update({ status: 'offline', problem: error instanceof SharedServiceError ? error.message : null })
     } finally { this.reading = false }
   }
 
@@ -136,7 +164,7 @@ export class SharedStore {
       const document = await this.transport.read()
       this.generation++
       this.dirty = false
-      this.update({ state: createState(document.data), revision: document.revision, ready: true, status: 'saved' })
+      this.update({ state: createState(document.data), revision: document.revision, ready: true, status: 'saved', problem: null })
     } catch {
       this.update({ status: 'conflict' })
     } finally { this.reading = false }

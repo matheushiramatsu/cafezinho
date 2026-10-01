@@ -24,7 +24,20 @@ A aplicação completa fica em `http://localhost:3001`. Compartilhe `http://IP-D
 
 Para acesso pela internet, hospede esse servidor Node.js em uma máquina com disco persistente e publique um domínio com HTTPS por meio de um proxy reverso. Esta versão usa um único espaço compartilhado, sem autenticação: quem tem acesso ao endereço pode ler e editar os dados. Use uma rede privada/VPN ou controle de acesso no proxy para limitar o acesso à equipe.
 
-A hospedagem estática anterior não executa este servidor. Não use o arquivo SQLite em disco temporário de funções serverless, nem em múltiplas réplicas com bancos separados. Execute uma instância do serviço com seu volume persistente.
+Para hospedar o servidor Node tradicional, execute uma instância com seu volume persistente. Na Vercel, use as funções e o SQLite remoto descritos abaixo; o disco temporário de funções serverless não preserva um banco compartilhado.
+
+### Vercel + SQLite remoto (Turso)
+
+A Vercel publica `api/data.ts` e `api/health.ts` como funções, além da interface em `dist`. O `vercel.json` define o projeto como Vite. Essas funções usam o Turso/libSQL (SQLite remoto) para compartilhar os dados entre todas as execuções, mantendo o SQLite local para `npm run dev` e `npm start`.
+
+1. No projeto **Cafezinho** da Vercel, abra **Storage** e conecte um banco **Turso**, disponível no [Marketplace](https://vercel.com/marketplace/tursocloud/database). Alternativamente, crie um banco Turso e configure suas credenciais diretamente em **Settings → Environment Variables**.
+2. Confirme que existem `TURSO_DATABASE_URL` e `TURSO_AUTH_TOKEN` no ambiente **Production**. Use um token com permissão de escrita. Para deploys de teste, configure também **Preview**, preferencialmente com um banco separado.
+3. Faça **Redeploy** depois de conectar o banco ou alterar as variáveis. As funções criam a tabela automaticamente no primeiro acesso, sem substituir dados existentes.
+4. Verifique `https://SEU-DOMINIO/api/health`: deve responder `{ "ok": true }`. Depois, abra a aplicação em dois navegadores e confira se uma edição aparece no outro.
+
+Essas variáveis são exclusivas do servidor. Não use prefixo `VITE_`, não coloque o token no código e não o envie ao GitHub. O deploy sem banco responde `503` com o código `database_not_configured`; a interface informa que o serviço precisa ser configurado. Um `404` em `/api/data` indica um deploy sem as funções.
+
+Referências: [Vercel Functions](https://vercel.com/docs/functions/runtimes/node-js) e [SQLite na Vercel](https://vercel.com/kb/guide/is-sqlite-supported-in-vercel).
 
 ### Docker
 
@@ -65,7 +78,7 @@ O banco é criado automaticamente e não entra no Git. Para backup simples, pare
 | `GET` | `/api/data` | `{ "revision": 0, "data": { ... } }` |
 | `PUT` | `/api/data` | Recebe `{ "revision": <revisão lida>, "data": <dados completos> }` e retorna a nova revisão |
 
-O `PUT` retorna `409` se a revisão estiver desatualizada, `400` para dados inválidos e `413` para conteúdo acima de 10 MiB. A API não habilita CORS; consumidores externos podem acessá-la pelo servidor/CLI na rede autorizada.
+O `PUT` retorna `409` se a revisão estiver desatualizada, `400` para dados inválidos e `413` para conteúdo acima de 10 MiB no servidor Node ou 4 MiB nas funções da Vercel. A API não habilita CORS; consumidores externos podem acessá-la pelo servidor/CLI na rede autorizada.
 
 ## Verificar
 
