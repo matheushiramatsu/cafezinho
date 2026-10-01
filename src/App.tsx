@@ -254,7 +254,7 @@ export default function App() {
       <main id="main" className="container">
         <p className="print-brand">Cafezinho ESL</p>
         <section className="intro" aria-labelledby="intro-title">
-          <h1 id="intro-title">Quem leva o quê no café?</h1>
+          <h1 id="intro-title">Quem leva o especialzinho no café? xi xi xi</h1>
           <p className="intro__text">
             Cadastre a turma e os itens, marque restrições e preferências, escolha a data e
             sorteie. O resultado fica equilibrado entre as pessoas e é salvo no histórico.

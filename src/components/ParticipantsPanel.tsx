@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import type { Participant } from '../domain/types'
 import { MAX_NAME_LENGTH } from '../domain/limits'
-import { plural } from '../domain/text'
+import { normalizeKey, plural } from '../domain/text'
+import willianImage from '../assets/willian.png'
 import Icon from './Icon'
 
 interface Props {
@@ -11,6 +12,19 @@ interface Props {
   onRename: (id: string, name: string) => string | null
   onRemove: (id: string) => void
   onOpenRules: (id: string) => void
+}
+
+function ParticipantImage({ name }: { name: string }) {
+  if (normalizeKey(name).split(' ')[0] !== 'willian') return null
+  return (
+    <img
+      className="participant-image"
+      src={willianImage}
+      alt="Especialzinho do Willian"
+      width={263}
+      height={225}
+    />
+  )
 }
 
 function rulesSummary(participant: Participant): string {
@@ -90,6 +104,7 @@ export default function ParticipantsPanel({
               Adicionar
             </button>
           </div>
+          <ParticipantImage name={name} />
           {error && (
             <p id="participant-name-error" className="field-error" role="alert">
               <Icon name="alert" size={16} />
@@ -230,6 +245,7 @@ function ParticipantRow({
                 if (event.key === 'Escape') setMode('view')
               }}
             />
+            <ParticipantImage name={draft} />
             {error && (
               <p id={`rename-error-${participant.id}`} className="field-error" role="alert">
                 <Icon name="alert" size={16} />
@@ -281,6 +297,7 @@ function ParticipantRow({
     <li className="row">
       <div className="row__main">
         <p className="row__title">{participant.name}</p>
+        <ParticipantImage name={participant.name} />
         <p className="meta">{rulesSummary(participant)}</p>
       </div>
       <div className="row__actions">
