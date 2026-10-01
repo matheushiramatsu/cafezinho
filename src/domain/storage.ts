@@ -1,4 +1,4 @@
-import type { AppData, Assignment, CoffeeItem, DrawSnapshot, Participant } from './types'
+import type { Assignment, CoffeeItem, DrawSnapshot, Participant, StoredData } from './types'
 import { isValidDateString } from './date'
 import {
   MAX_HISTORY,
@@ -18,8 +18,8 @@ export const STORAGE_VERSION = 1
 
 export type ThemePreference = 'system' | 'light' | 'dark'
 
-export function emptyData(): AppData {
-  return { participants: [], items: [], coffeeDate: '', history: [] }
+export function emptyData(): StoredData {
+  return { participants: [], items: [], coffeeDate: '', history: [], currentResultId: null }
 }
 
 type Raw = Record<string, unknown>
@@ -154,7 +154,7 @@ function sanitizeSnapshot(value: unknown): DrawSnapshot | null {
 }
 
 export interface SanitizeResult {
-  data: AppData
+  data: StoredData
   dropped: number
 }
 
@@ -182,7 +182,15 @@ export function sanitizeData(raw: unknown): SanitizeResult {
       history.push(snapshot)
     }
   }
-  return { data: { participants, items, coffeeDate, history }, dropped: counter.dropped }
+  // O resultado atual só vale se apontar para um sorteio que existe no histórico.
+  const currentResultId =
+    typeof raw.currentResultId === 'string' && historyIds.has(raw.currentResultId)
+      ? raw.currentResultId
+      : null
+  return {
+    data: { participants, items, coffeeDate, history, currentResultId },
+    dropped: counter.dropped,
+  }
 }
 
 export function getStorage(): Storage | null {
@@ -194,7 +202,7 @@ export function getStorage(): Storage | null {
 }
 
 export interface LoadResult {
-  data: AppData
+  data: StoredData
   /** Aviso para mostrar ao usuário (dados descartados, payload corrompido...). */
   notice: string | null
 }
@@ -256,7 +264,7 @@ export function loadData(storage: Storage | null = getStorage()): LoadResult {
 
 export type SaveResult = { ok: true } | { ok: false; reason: 'quota' | 'unavailable' }
 
-export function saveData(data: AppData, storage: Storage | null = getStorage()): SaveResult {
+export function saveData(data: StoredData, storage: Storage | null = getStorage()): SaveResult {
   if (!storage) return { ok: false, reason: 'unavailable' }
   try {
     storage.setItem(STORAGE_KEY, JSON.stringify({ version: STORAGE_VERSION, ...data }))

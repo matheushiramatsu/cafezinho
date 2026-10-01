@@ -36,3 +36,8 @@ export interface AppData {
   /** Mais recente primeiro. */
   history: DrawSnapshot[]
 }
+
+/** Formato persistido: dados + id do resultado atual (um item do histórico). */
+export interface StoredData extends AppData {
+  currentResultId: string | null
+}

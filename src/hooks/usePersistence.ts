@@ -1,5 +1,5 @@
 import { useEffect, useSyncExternalStore } from 'react'
-import type { AppData } from '../domain/types'
+import type { StoredData } from '../domain/types'
 import { saveData } from '../domain/storage'
 
 export type PersistenceProblem = 'quota' | 'unavailable' | null
@@ -23,11 +23,17 @@ function report(next: PersistenceProblem) {
 }
 
 /** Salva os dados persistentes a cada mudança e expõe falhas de gravação. */
-export function usePersistence({ participants, items, coffeeDate, history }: AppData) {
+export function usePersistence({
+  participants,
+  items,
+  coffeeDate,
+  history,
+  currentResultId,
+}: StoredData) {
   useEffect(() => {
-    const outcome = saveData({ participants, items, coffeeDate, history })
+    const outcome = saveData({ participants, items, coffeeDate, history, currentResultId })
     report(outcome.ok ? null : outcome.reason)
-  }, [participants, items, coffeeDate, history])
+  }, [participants, items, coffeeDate, history, currentResultId])
 
   return useSyncExternalStore(
     subscribe,

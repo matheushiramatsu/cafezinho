@@ -50,7 +50,13 @@ function sampleData() {
     rng: seeded(1),
   })
   if (!outcome.ok) throw new Error('falha')
-  return { participants, items, coffeeDate: '2026-10-14', history: [outcome.snapshot] }
+  return {
+    participants,
+    items,
+    coffeeDate: '2026-10-14',
+    history: [outcome.snapshot],
+    currentResultId: 'h1' as string | null,
+  }
 }
 
 describe('persistência', () => {

@@ -1,4 +1,11 @@
-import type { AppData, Assignment, CoffeeItem, DrawSnapshot, Participant } from './types'
+import type {
+  AppData,
+  Assignment,
+  CoffeeItem,
+  DrawSnapshot,
+  Participant,
+  StoredData,
+} from './types'
 import { cloneSnapshot } from './draw'
 import { MAX_HISTORY } from './limits'
 import {
@@ -12,14 +19,52 @@ import { isRestricted, normalizeParticipants } from './rules'
 import { collapseSpaces, normalizeKey } from './text'
 
 export interface AppState extends AppData {
-  /** Resultado atual (não persistido; derivado de cadastros que podem mudar). */
+  /**
+   * Resultado atual. Persistido só por id (aponta para o histórico) e
+   * restaurado ao carregar se cadastros e data ainda correspondem a ele.
+   */
   result: DrawSnapshot | null
   /** Verdadeiro quando um resultado visível foi descartado por uma edição. */
   invalidated: boolean
 }
 
-export function createState(data: AppData): AppState {
-  return { ...data, result: null, invalidated: false }
+function sameSet(a: string[], b: string[]): boolean {
+  return a.length === b.length && [...a].sort().join('\u0000') === [...b].sort().join('\u0000')
+}
+
+/** O snapshot ainda descreve exatamente os cadastros e a data atuais? */
+export function snapshotMatchesData(snapshot: DrawSnapshot, data: AppData): boolean {
+  if (snapshot.coffeeDate !== data.coffeeDate) return false
+  if (snapshot.participants.length !== data.participants.length) return false
+  if (snapshot.items.length !== data.items.length) return false
+  const sameParticipants = snapshot.participants.every((p, index) => {
+    const q = data.participants[index]
+    return (
+      p.id === q.id &&
+      p.name === q.name &&
+      sameSet(p.cannotBringItemIds, q.cannotBringItemIds) &&
+      sameSet(p.cannotBringCategories, q.cannotBringCategories) &&
+      sameSet(p.preferredItemIds, q.preferredItemIds)
+    )
+  })
+  if (!sameParticipants) return false
+  return snapshot.items.every((item, index) => {
+    const other = data.items[index]
+    return (
+      item.id === other.id &&
+      item.name === other.name &&
+      item.quantity === other.quantity &&
+      (item.category ?? '') === (other.category ?? '')
+    )
+  })
+}
+
+export function createState(data: AppData | StoredData): AppState {
+  const { participants, items, coffeeDate, history } = data
+  const id = 'currentResultId' in data ? data.currentResultId : null
+  const entry = id ? history.find((h) => h.id === id) : undefined
+  const restored = entry && snapshotMatchesData(entry, data) ? cloneSnapshot(entry) : null
+  return { participants, items, coffeeDate, history, result: restored, invalidated: false }
 }
 
 export type Action =
@@ -172,16 +217,23 @@ export function reducer(state: AppState, action: Action): AppState {
     case 'clearResult':
       return { ...state, result: null, invalidated: false }
     case 'removeHistory':
-      return { ...state, history: state.history.filter((h) => h.id !== action.id) }
+      // O resultado atual vive no histórico: removê-lo da lista o tira da tela.
+      return {
+        ...state,
+        history: state.history.filter((h) => h.id !== action.id),
+        result: state.result?.id === action.id ? null : state.result,
+      }
     case 'clearHistory':
-      return { ...state, history: [] }
+      return { ...state, history: [], result: null }
     default:
       return state
   }
 }
 
-/** Sorteio de referência: o resultado atual, ou o mais recente do histórico. */
+/**
+ * Sorteio de referência para evitar repetições: sempre o último sorteio
+ * cronológico (history[0]), nunca o snapshot que estiver aberto em Resultado.
+ */
 export function referenceAssignments(state: AppState): Assignment[] {
-  const reference = state.result ?? state.history[0]
-  return reference ? reference.assignments : []
+  return state.history[0]?.assignments ?? []
 }

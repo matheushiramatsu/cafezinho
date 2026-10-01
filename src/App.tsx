@@ -52,8 +52,14 @@ export default function App() {
     setAnnouncement((previous) => ({ text, count: previous.count + 1 }))
   }, [])
 
-  // Persistência: tudo exceto o resultado atual (derivado e descartável).
-  const storageProblem = usePersistence({ participants, items, coffeeDate, history })
+  // Persistência: cadastros, data, histórico e o id do resultado atual (restaurado do histórico).
+  const storageProblem = usePersistence({
+    participants,
+    items,
+    coffeeDate,
+    history,
+    currentResultId: result?.id ?? null,
+  })
 
   // Depois de sortear, leva o foco para o resultado.
   useEffect(() => {
