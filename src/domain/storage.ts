@@ -1,15 +1,15 @@
 import type { Assignment, CoffeeItem, DrawSnapshot, Participant, StoredData } from './types'
-import { isValidDateString } from './date'
+import { isValidDateString } from './date.js'
 import {
   MAX_HISTORY,
   MAX_ITEMS,
   MAX_NAME_LENGTH,
   MAX_PARTICIPANTS,
   MAX_QUANTITY,
-} from './limits'
-import { cleanCategory } from './registry'
-import { normalizeParticipants, uniq } from './rules'
-import { collapseSpaces, normalizeKey } from './text'
+} from './limits.js'
+import { cleanCategory } from './registry.js'
+import { normalizeParticipants, uniq } from './rules.js'
+import { collapseSpaces, normalizeKey } from './text.js'
 
 export const STORAGE_KEY = 'cafezinho:v1'
 export const BACKUP_KEY = 'cafezinho:v1:backup'

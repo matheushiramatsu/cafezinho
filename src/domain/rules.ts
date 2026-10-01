@@ -1,5 +1,5 @@
 import type { CoffeeItem, Participant } from './types'
-import { collapseSpaces, normalizeKey } from './text'
+import { collapseSpaces, normalizeKey } from './text.js'
 
 export type RestrictionReason = 'item' | 'category'
 

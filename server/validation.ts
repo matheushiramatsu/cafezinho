@@ -1,7 +1,7 @@
 import { z } from 'zod'
-import { isValidDateString } from '../src/domain/date'
-import { MAX_HISTORY, MAX_ITEMS, MAX_NAME_LENGTH, MAX_PARTICIPANTS, MAX_QUANTITY } from '../src/domain/limits'
-import { sanitizeData } from '../src/domain/storage'
+import { isValidDateString } from '../src/domain/date.js'
+import { MAX_HISTORY, MAX_ITEMS, MAX_NAME_LENGTH, MAX_PARTICIPANTS, MAX_QUANTITY } from '../src/domain/limits.js'
+import { sanitizeData } from '../src/domain/storage.js'
 
 const id = z.string().min(1).max(200)
 const name = z.string().trim().min(1).max(MAX_NAME_LENGTH)

@@ -1,5 +1,5 @@
 import { createClient, type Client } from '@libsql/client/web'
-import { emptyData } from '../src/domain/storage'
+import { emptyData } from '../src/domain/storage.js'
 import type { StoredData } from '../src/domain/types'
 import type { SharedDocument } from './database'
 

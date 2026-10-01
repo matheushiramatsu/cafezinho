@@ -1,5 +1,5 @@
-import { DatabaseConfigurationError, getHostedDatabase, type HostedDatabase } from './hosted-database'
-import { validateWrite } from './validation'
+import { DatabaseConfigurationError, getHostedDatabase, type HostedDatabase } from './hosted-database.js'
+import { validateWrite } from './validation.js'
 
 const MAX_BODY = 4 * 1024 * 1024
 function json(value: unknown, status = 200) {

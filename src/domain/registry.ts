@@ -4,8 +4,8 @@ import {
   MAX_NAME_LENGTH,
   MAX_PARTICIPANTS,
   MAX_QUANTITY,
-} from './limits'
-import { collapseSpaces, normalizeKey } from './text'
+} from './limits.js'
+import { collapseSpaces, normalizeKey } from './text.js'
 
 interface Named {
   id: string
