@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import eslLogo from './assets/esl-logo-branca.png'
 import DrawBar from './components/DrawBar'
 import HistoryPanel from './components/HistoryPanel'
@@ -7,6 +7,7 @@ import ItemsPanel, { type ItemErrors } from './components/ItemsPanel'
 import ParticipantsPanel from './components/ParticipantsPanel'
 import ResultPanel from './components/ResultPanel'
 import RulesPanel from './components/RulesPanel'
+import SharingPanel from './components/SharingPanel'
 import ThemeToggle from './components/ThemeToggle'
 import { runDraw, type DrawError } from './domain/draw'
 import { formatDateLong, formatDateShort } from './domain/date'
@@ -19,10 +20,10 @@ import {
   validateParticipantName,
 } from './domain/registry'
 import { isRestricted } from './domain/rules'
-import { createState, reducer, referenceAssignments } from './domain/state'
+import { referenceAssignments } from './domain/state'
 import { loadData } from './domain/storage'
 import { collapseSpaces, normalizeKey } from './domain/text'
-import { usePersistence } from './hooks/usePersistence'
+import { useSharedState } from './hooks/useSharedState'
 import { useTheme } from './hooks/useTheme'
 
 interface RunNote {
@@ -36,7 +37,8 @@ function prefersReducedMotion(): boolean {
 
 export default function App() {
   const [boot] = useState(() => loadData())
-  const [state, dispatch] = useReducer(reducer, boot.data, createState)
+  const { state, dispatch, status, ready, revision, store } = useSharedState()
+  const [localDismissed, setLocalDismissed] = useState(false)
   const [theme, setTheme] = useTheme()
   const [bootNotice, setBootNotice] = useState(boot.notice)
   const [announcement, setAnnouncement] = useState({ text: '', count: 0 })
@@ -53,14 +55,7 @@ export default function App() {
     setAnnouncement((previous) => ({ text, count: previous.count + 1 }))
   }, [])
 
-  // Persistência: cadastros, data, histórico e o id do resultado atual (restaurado do histórico).
-  const storageProblem = usePersistence({
-    participants,
-    items,
-    coffeeDate,
-    history,
-    currentResultId: result?.id ?? null,
-  })
+  const hasLocalData = boot.data.participants.length > 0 || boot.data.items.length > 0 || boot.data.history.length > 0 || boot.data.coffeeDate !== ''
 
   // Depois de sortear, leva o foco para o resultado.
   useEffect(() => {
@@ -76,7 +71,7 @@ export default function App() {
     dispatch(action)
     setDrawError(null)
     setDateError(null)
-  }, [])
+  }, [dispatch])
 
   // --- Participantes -------------------------------------------------------
   function addParticipant(name: string): string | null {
@@ -275,15 +270,16 @@ export default function App() {
             </button>
           </div>
         )}
-        {storageProblem && (
-          <div className="notice notice--danger" role="alert">
-            <p>
-              {storageProblem === 'quota'
-                ? 'O armazenamento do navegador está cheio: as últimas alterações não foram salvas. Exclua sorteios antigos do histórico para liberar espaço.'
-                : 'Não foi possível salvar neste navegador (armazenamento indisponível ou bloqueado). Você pode continuar, mas os dados se perdem ao fechar a página.'}
-            </p>
+        <SharingPanel status={status} store={store} />
+        {ready && revision === 0 && status === 'saved' && hasLocalData && !localDismissed && (
+          <div className="notice notice--warning">
+            <p>Há dados antigos neste navegador e o banco compartilhado está vazio. Deseja compartilhá-los com a equipe? A cópia local será preservada.</p>
+            <button type="button" className="btn btn--ghost" onClick={() => { store.importLocal(boot.data); setLocalDismissed(true) }}>Importar e compartilhar dados antigos</button>
+            <button type="button" className="btn btn--ghost" onClick={() => setLocalDismissed(true)}>Começar sem importar</button>
           </div>
         )}
+
+        <fieldset className="shared-content" disabled={!ready || status === 'conflict'} aria-label="Dados do café">
 
         <DrawBar
           date={coffeeDate}
@@ -350,11 +346,12 @@ export default function App() {
             announce('Histórico apagado.')
           }}
         />
+        </fieldset>
       </main>
 
       <footer className="footer">
         <p className="meta">
-          Seus dados ficam apenas neste navegador. Nada é enviado para a internet.
+          Os dados da equipe ficam no servidor e são compartilhados por este endereço.
           {coffeeDate && ` Café marcado para ${formatDateShort(coffeeDate)}.`}
         </p>
       </footer>

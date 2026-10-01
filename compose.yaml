@@ -1,0 +1,11 @@
+services:
+  cafezinho:
+    build: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - cafezinho-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  cafezinho-data:

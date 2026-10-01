@@ -1025,6 +1025,22 @@ select.input {
   }
 }
 
+.shared-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.sharing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 /* ---------- Impressão ---------- */
 
 @media print {
@@ -1059,13 +1075,18 @@ select.input {
   .result__actions,
   .result__stats,
   .rules-panel,
-  .container > section:not(.result) {
+  .container > section:not(.result),
+  .shared-content > section:not(.result) {
     display: none !important;
   }
 
   .container {
     max-width: none;
     padding: 0;
+    gap: 0;
+  }
+
+  .shared-content {
     gap: 0;
   }
 
