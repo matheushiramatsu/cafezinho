@@ -1,6 +1,6 @@
 # Cafezinho
 
-Sorteio de quem leva o quê no cafezinho da equipe. Frontend React 19 + TypeScript + Vite, sem backend:
+O Cafezinho sorteia quem leva o quê no café da equipe. Frontend React 19 + TypeScript + Vite, sem backend:
 os dados ficam no `localStorage` do navegador.
 
 ## Comandos
@@ -19,5 +19,5 @@ npm test         # vitest (domínio: sorteio, regras, estado, persistência)
 - `src/index.css`: tokens de cor (claro/escuro) com a paleta da ESL (eslsistemas.com.br).
 - `src/assets/esl-logo-branca.png`, `public/favicon.png`: logo e ícone da ESL.
 
-As chaves do `localStorage` mantêm o prefixo `cafe-da-firma:` de propósito, para preservar os dados já salvos
-antes do renome para Cafezinho.
+As chaves do `localStorage` usam o prefixo `cafezinho:`. Dados salvos antes do renome (prefixo antigo)
+são lidos como fallback e migrados para as chaves novas no primeiro salvamento.

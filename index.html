@@ -9,13 +9,13 @@
     <meta name="theme-color" content="#33479e" />
     <meta
       name="description"
-      content="Sorteie quem leva o quê no cafezinho da equipe, com restrições, preferências e histórico."
+      content="Cafezinho: sorteie quem leva o quê no café da equipe, com restrições, preferências e histórico."
     />
     <title>Cafezinho</title>
     <script>
       // Aplica o tema salvo antes da primeira pintura para evitar flash.
       try {
-        var t = localStorage.getItem('cafe-da-firma:theme')
+        var t = localStorage.getItem('cafezinho:theme') || localStorage.getItem('cafe-da-firma:theme')
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
       } catch (e) {}
     </script>

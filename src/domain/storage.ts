@@ -11,10 +11,12 @@ import { cleanCategory } from './registry'
 import { normalizeParticipants, uniq } from './rules'
 import { collapseSpaces, normalizeKey } from './text'
 
-// Chaves mantêm o nome antigo (Café da Firma) para não perder dados já salvos após o renome para Cafezinho.
-export const STORAGE_KEY = 'cafe-da-firma:v1'
-export const BACKUP_KEY = 'cafe-da-firma:v1:backup'
-export const THEME_KEY = 'cafe-da-firma:theme'
+export const STORAGE_KEY = 'cafezinho:v1'
+export const BACKUP_KEY = 'cafezinho:v1:backup'
+export const THEME_KEY = 'cafezinho:theme'
+// Chaves de antes do renome para Cafezinho: lidas como fallback e migradas no primeiro salvamento.
+export const LEGACY_STORAGE_KEY = 'cafe-da-firma:v1'
+export const LEGACY_THEME_KEY = 'cafe-da-firma:theme'
 export const STORAGE_VERSION = 1
 
 export type ThemePreference = 'system' | 'light' | 'dark'
@@ -212,7 +214,7 @@ export function loadData(storage: Storage | null = getStorage()): LoadResult {
   if (!storage) return { data: emptyData(), notice: null }
   let text: string | null
   try {
-    text = storage.getItem(STORAGE_KEY)
+    text = storage.getItem(STORAGE_KEY) ?? storage.getItem(LEGACY_STORAGE_KEY)
   } catch {
     return { data: emptyData(), notice: null }
   }
@@ -269,6 +271,11 @@ export function saveData(data: StoredData, storage: Storage | null = getStorage(
   if (!storage) return { ok: false, reason: 'unavailable' }
   try {
     storage.setItem(STORAGE_KEY, JSON.stringify({ version: STORAGE_VERSION, ...data }))
+    try {
+      storage.removeItem(LEGACY_STORAGE_KEY) // migrado: só depois de gravar a chave nova
+    } catch {
+      /* mantém a chave antiga */
+    }
     return { ok: true }
   } catch (error) {
     const quota =
@@ -280,7 +287,7 @@ export function saveData(data: StoredData, storage: Storage | null = getStorage(
 
 export function loadTheme(storage: Storage | null = getStorage()): ThemePreference {
   try {
-    const value = storage?.getItem(THEME_KEY)
+    const value = storage?.getItem(THEME_KEY) ?? storage?.getItem(LEGACY_THEME_KEY)
     return value === 'light' || value === 'dark' ? value : 'system'
   } catch {
     return 'system'
@@ -295,6 +302,7 @@ export function saveTheme(
     if (!storage) return false
     if (theme === 'system') storage.removeItem(THEME_KEY)
     else storage.setItem(THEME_KEY, theme)
+    storage.removeItem(LEGACY_THEME_KEY)
     return true
   } catch {
     return false
