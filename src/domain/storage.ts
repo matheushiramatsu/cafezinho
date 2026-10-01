@@ -11,6 +11,7 @@ import { cleanCategory } from './registry'
 import { normalizeParticipants, uniq } from './rules'
 import { collapseSpaces, normalizeKey } from './text'
 
+// Chaves mantêm o nome antigo (Café da Firma) para não perder dados já salvos após o renome para Cafezinho.
 export const STORAGE_KEY = 'cafe-da-firma:v1'
 export const BACKUP_KEY = 'cafe-da-firma:v1:backup'
 export const THEME_KEY = 'cafe-da-firma:theme'

@@ -1,28 +1,39 @@
-/* Tokens, reset e elementos base. Sem fontes remotas. */
+/* Tokens, reset e elementos base. Paleta extraída de eslsistemas.com.br. Sem fontes remotas. */
 
 :root {
-  --bg: #f7f5f1;
-  --surface: #fffefc;
-  --surface-sunken: #f1eee8;
-  --text: #25221e;
-  --muted: #665f56;
-  --border: #ded9d1;
-  --border-strong: #8c857b;
-  --accent: #a3452e;
-  --accent-hover: #893723;
-  --accent-active: #772f1e;
-  --accent-subtle: #f4e6df;
-  --on-accent: #ffffff;
-  --success: #426b54;
-  --success-bg: #e8f0ea;
-  --danger: #a63333;
-  --danger-bg: #f9e8e6;
-  --focus: #a3452e;
-  --shadow-pop: 0 4px 16px rgb(37 34 30 / 0.12);
+  /* Superfícies e texto */
+  --bg: #fafafd;
+  --surface: #ffffff;
+  --surface-sunken: #f0f0fc;
+  --text: #1d1e23;
+  --muted: #4d515f;
+  --border: #e6e7eb;
+  --border-strong: #8b8fa1;
 
-  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+  /* Marca ESL: azul */
+  --accent: #475cc7;
+  --accent-hover: #33479e;
+  --accent-active: #102050;
+  --accent-subtle: #e7e7f3;
+  --on-accent: #ffffff;
+  --focus: #475cc7;
+
+  /* Faixa do cabeçalho (logo branca da ESL sobre azul) */
+  --topbar-bg: #33479e;
+  --topbar-text: #ffffff;
+  --topbar-line: rgb(255 255 255 / 0.55);
+
+  /* Estados */
+  --success: #1b6f7a;
+  --success-bg: #d8f0f2;
+  --danger: #c03c08;
+  --danger-bg: #fdeae2;
+  --on-danger: #ffffff;
+
+  --shadow-pop: 0 4px 16px rgb(16 32 80 / 0.14);
+
+  --font-sans: 'Open Sans', Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
-  --font-serif: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -42,46 +53,50 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --bg: #181715;
-    --surface: #24221f;
-    --surface-sunken: #1d1b19;
-    --text: #f5f1e9;
-    --muted: #beb5aa;
-    --border: #484139;
-    --border-strong: #7d7468;
-    --accent: #e49378;
-    --accent-hover: #f2aa91;
-    --accent-active: #f7bca7;
-    --accent-subtle: #3a2a24;
-    --on-accent: #181715;
-    --success: #a5d0ad;
-    --success-bg: #1f2c24;
-    --danger: #f29b94;
-    --danger-bg: #3a2321;
-    --focus: #f2aa91;
+    --bg: #1d1e23;
+    --surface: #26282f;
+    --surface-sunken: #1a1b20;
+    --text: #f0f0fc;
+    --muted: #bac2e9;
+    --border: #3a3d4a;
+    --border-strong: #8b8fa1;
+    --accent: #8e9bea;
+    --accent-hover: #a9b4f2;
+    --accent-active: #bac2e9;
+    --accent-subtle: #2b3052;
+    --on-accent: #14151a;
+    --focus: #bac2e9;
+    --topbar-bg: #102050;
+    --success: #98d6dd;
+    --success-bg: #173137;
+    --danger: #ff9a73;
+    --danger-bg: #3d2219;
+    --on-danger: #14151a;
     --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #181715;
-  --surface: #24221f;
-  --surface-sunken: #1d1b19;
-  --text: #f5f1e9;
-  --muted: #beb5aa;
-  --border: #484139;
-  --border-strong: #7d7468;
-  --accent: #e49378;
-  --accent-hover: #f2aa91;
-  --accent-active: #f7bca7;
-  --accent-subtle: #3a2a24;
-  --on-accent: #181715;
-  --success: #a5d0ad;
-  --success-bg: #1f2c24;
-  --danger: #f29b94;
-  --danger-bg: #3a2321;
-  --focus: #f2aa91;
+  --bg: #1d1e23;
+  --surface: #26282f;
+  --surface-sunken: #1a1b20;
+  --text: #f0f0fc;
+  --muted: #bac2e9;
+  --border: #3a3d4a;
+  --border-strong: #8b8fa1;
+  --accent: #8e9bea;
+  --accent-hover: #a9b4f2;
+  --accent-active: #bac2e9;
+  --accent-subtle: #2b3052;
+  --on-accent: #14151a;
+  --focus: #bac2e9;
+  --topbar-bg: #102050;
+  --success: #98d6dd;
+  --success-bg: #173137;
+  --danger: #ff9a73;
+  --danger-bg: #3d2219;
+  --on-danger: #14151a;
   --shadow-pop: 0 4px 16px rgb(0 0 0 / 0.5);
   color-scheme: dark;
 }
@@ -122,7 +137,6 @@ legend {
 }
 
 h1 {
-  font-family: var(--font-serif);
   font-size: 32px;
   line-height: 1.15;
   font-weight: 700;

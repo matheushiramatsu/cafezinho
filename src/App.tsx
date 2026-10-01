@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
+import eslLogo from './assets/esl-logo-branca.png'
 import DrawBar from './components/DrawBar'
 import HistoryPanel from './components/HistoryPanel'
 import Icon from './components/Icon'
@@ -248,8 +249,8 @@ export default function App() {
       <header className="topbar">
         <div className="topbar__inner">
           <p className="brand">
-            <Icon name="coffee" size={22} />
-            <span>Café da Firma</span>
+            <img className="brand__logo" src={eslLogo} alt="ESL" width={69} height={32} />
+            <span className="brand__name">Cafezinho</span>
           </p>
           <ThemeToggle theme={theme} onChange={setTheme} />
         </div>

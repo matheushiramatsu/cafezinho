@@ -1,75 +1,23 @@
-# React + TypeScript + Vite
+# Cafezinho
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Sorteio de quem leva o quê no cafezinho da equipe. Frontend React 19 + TypeScript + Vite, sem backend:
+os dados ficam no `localStorage` do navegador.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Comandos
 
 ```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+npm run dev      # servidor de desenvolvimento
+npm run build    # tsc -b && vite build
+npm run lint     # eslint
+npm test         # vitest (domínio: sorteio, regras, estado, persistência)
 ```
+
+## Estrutura
+
+- `src/domain/`: regras de negócio puras (sorteio por fluxo de custo mínimo, cadastros, estado, persistência).
+- `src/components/`, `src/hooks/`: interface.
+- `src/index.css`: tokens de cor (claro/escuro) com a paleta da ESL (eslsistemas.com.br).
+- `src/assets/esl-logo-branca.png`, `public/favicon.png`: logo e ícone da ESL.
+
+As chaves do `localStorage` mantêm o prefixo `cafe-da-firma:` de propósito, para preservar os dados já salvos
+antes do renome para Cafezinho.
