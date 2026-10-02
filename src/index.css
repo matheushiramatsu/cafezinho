@@ -1,71 +1,40 @@
-/*
- * Tokens semânticos do design system Anil (estrutura shadcn/ui).
- * Fontes empacotadas no app: sem requisições a serviços externos.
- */
+/* Paleta neutra e tipografia Geist, com fontes locais. */
 @import '@fontsource-variable/geist/wght.css';
-@import '@fontsource-variable/bricolage-grotesque/opsz.css';
 
 :root {
-  /* Superfícies e texto */
-  --background: #fafafd;
-  --foreground: #1d1e23;
+  --background: #fafafa;
+  --foreground: #171717;
   --card: #ffffff;
-  --card-foreground: #1d1e23;
+  --card-foreground: #171717;
   --popover: #ffffff;
-  --popover-foreground: #1d1e23;
-
-  /* Cores principais */
-  --primary: #475cc7;
+  --popover-foreground: #171717;
+  --primary: #171717;
   --primary-foreground: #ffffff;
-  --primary-hover: #33479e;
-  --primary-active: #102050;
-  --secondary: #e7e7f3;
-  --secondary-foreground: #102050;
-  --muted: #f0f0fc;
-  --muted-foreground: #4d515f;
-  --accent: #e7e7f3;
-  --accent-foreground: #102050;
-
-  /* Estados */
-  --destructive: #c03c08;
+  --primary-hover: #333333;
+  --primary-active: #000000;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #171717;
+  --muted: #f5f5f5;
+  --muted-foreground: #666666;
+  --accent: #f0f0f0;
+  --accent-foreground: #171717;
+  --destructive: #c62828;
   --destructive-foreground: #ffffff;
-  --destructive-subtle: #fdeae2;
-  --success: #1b6f7a;
-  --success-bg: #d8f0f2;
-
-  /* Bordas e foco: `border` é decorativo; controles usam `input` (>= 3:1) */
-  --border: #e6e7eb;
-  --input: #8b8fa1;
-  --ring: #475cc7;
+  --destructive-subtle: #fff5f5;
+  --success: #18713b;
+  --success-bg: #f0faf3;
+  --border: #e5e5e5;
+  --input: #949494;
+  --ring: #737373;
   --tabs-active: #ffffff;
-
-  /* Faixa do cabeçalho */
-  --topbar-bg: #33479e;
-  --topbar-text: #ffffff;
-  --topbar-line: rgb(255 255 255 / 0.55);
-
-  /* Vidro: usado apenas no controle segmentado de tema */
-  --glass-tint: rgb(255 255 255 / 0.14);
-  --glass-tint-solid: rgb(255 255 255 / 0.14);
-  --glass-tint-active: rgb(255 255 255 / 0.94);
-  --glass-highlight: rgb(255 255 255 / 0.7);
-  --glass-edge: rgb(255 255 255 / 0.28);
-  --glass-foreground: #ffffff;
-  --glass-active-foreground: #102050;
-  --glass-saturation: 1.4;
-  --glass-blur: 10px;
-
-  /* Sombras: xs em controles, sm em painéis */
-  --shadow-xs: 0 1px 2px 0 rgb(16 32 80 / 0.06);
-  --shadow-sm: 0 1px 3px 0 rgb(16 32 80 / 0.1), 0 1px 2px -1px rgb(16 32 80 / 0.1);
-
-  /* Tipografia: Bricolage Grotesque só em títulos >= 20px; Geist no resto */
-  --font-display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Geist Variable', 'Geist',
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-sans: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
-
-  /* Espaço (escala de 4px) */
+  --topbar-bg: #ffffff;
+  --topbar-text: #171717;
+  --topbar-line: #e5e5e5;
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-sm: none;
+  --font-sans: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: var(--font-sans);
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -73,83 +42,83 @@
   --space-6: 24px;
   --space-8: 32px;
   --space-12: 48px;
-
-  /* Raios: 8 botões e campos, 10 tabs, 14 painéis */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 10px;
-  --radius-xl: 14px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 8px;
   --radius-full: 9999px;
-
   --ease: 150ms ease;
   --target: 44px;
-
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --background: #1d1e23;
-    --foreground: #f0f0fc;
-    --card: #26282f;
-    --card-foreground: #f0f0fc;
-    --popover: #26282f;
-    --popover-foreground: #f0f0fc;
-    --primary: #8e9bea;
-    --primary-foreground: #14151a;
-    --primary-hover: #a9b4f2;
-    --primary-active: #bac2e9;
-    --secondary: #2b3052;
-    --secondary-foreground: #f0f0fc;
-    --muted: #2d303a;
-    --muted-foreground: #bac2e9;
-    --accent: #2b3052;
-    --accent-foreground: #f0f0fc;
-    --destructive: #ff9a73;
-    --destructive-foreground: #14151a;
-    --destructive-subtle: #3d2219;
-    --success: #98d6dd;
-    --success-bg: #173137;
-    --border: #3a3d4a;
-    --input: #8b8fa1;
-    --ring: #bac2e9;
-    --tabs-active: #1d1e23;
-    --topbar-bg: #102050;
-    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.4);
-    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.5);
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --card: #111111;
+    --card-foreground: #ededed;
+    --popover: #171717;
+    --popover-foreground: #ededed;
+    --primary: #ededed;
+    --primary-foreground: #0a0a0a;
+    --primary-hover: #d4d4d4;
+    --primary-active: #ffffff;
+    --secondary: #1a1a1a;
+    --secondary-foreground: #ededed;
+    --muted: #1a1a1a;
+    --muted-foreground: #a1a1a1;
+    --accent: #242424;
+    --accent-foreground: #ededed;
+    --destructive: #ff8080;
+    --destructive-foreground: #0a0a0a;
+    --destructive-subtle: #2a1414;
+    --success: #70d694;
+    --success-bg: #11251a;
+    --border: #2a2a2a;
+    --input: #707070;
+    --ring: #a1a1a1;
+    --tabs-active: #242424;
+    --topbar-bg: #0a0a0a;
+    --topbar-text: #ededed;
+    --topbar-line: #2a2a2a;
+    --shadow-xs: none;
+    --shadow-sm: none;
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --background: #1d1e23;
-  --foreground: #f0f0fc;
-  --card: #26282f;
-  --card-foreground: #f0f0fc;
-  --popover: #26282f;
-  --popover-foreground: #f0f0fc;
-  --primary: #8e9bea;
-  --primary-foreground: #14151a;
-  --primary-hover: #a9b4f2;
-  --primary-active: #bac2e9;
-  --secondary: #2b3052;
-  --secondary-foreground: #f0f0fc;
-  --muted: #2d303a;
-  --muted-foreground: #bac2e9;
-  --accent: #2b3052;
-  --accent-foreground: #f0f0fc;
-  --destructive: #ff9a73;
-  --destructive-foreground: #14151a;
-  --destructive-subtle: #3d2219;
-  --success: #98d6dd;
-  --success-bg: #173137;
-  --border: #3a3d4a;
-  --input: #8b8fa1;
-  --ring: #bac2e9;
-  --tabs-active: #1d1e23;
-  --topbar-bg: #102050;
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.4);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.5);
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --card: #111111;
+  --card-foreground: #ededed;
+  --popover: #171717;
+  --popover-foreground: #ededed;
+  --primary: #ededed;
+  --primary-foreground: #0a0a0a;
+  --primary-hover: #d4d4d4;
+  --primary-active: #ffffff;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #ededed;
+  --muted: #1a1a1a;
+  --muted-foreground: #a1a1a1;
+  --accent: #242424;
+  --accent-foreground: #ededed;
+  --destructive: #ff8080;
+  --destructive-foreground: #0a0a0a;
+  --destructive-subtle: #2a1414;
+  --success: #70d694;
+  --success-bg: #11251a;
+  --border: #2a2a2a;
+  --input: #707070;
+  --ring: #a1a1a1;
+  --tabs-active: #242424;
+  --topbar-bg: #0a0a0a;
+  --topbar-text: #ededed;
+  --topbar-line: #2a2a2a;
+  --shadow-xs: none;
+  --shadow-sm: none;
   color-scheme: dark;
 }
 
@@ -169,7 +138,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
   font-weight: 400;
   font-optical-sizing: auto;
@@ -189,7 +158,7 @@ legend {
   padding: 0;
 }
 
-/* Bricolage Grotesque: apenas títulos de 20px ou mais (eixo opsz acompanha o tamanho) */
+/* Uma família tipográfica em toda a interface. */
 h1,
 h2 {
   font-family: var(--font-display);

@@ -243,6 +243,7 @@ export default function App() {
       <header className="topbar">
         <div className="topbar__inner">
           <p className="brand">
+            <span className="brand__mark"><Icon name="coffee" size={20} /></span>
             <span className="brand__name">Cafezinho</span>
           </p>
           <ThemeToggle theme={theme} onChange={setTheme} />
@@ -252,12 +253,19 @@ export default function App() {
       <main id="main" className="container">
         <p className="print-brand">Cafezinho</p>
         <section className="intro" aria-labelledby="intro-title">
+          <p className="intro__eyebrow">Café da equipe</p>
           <h1 id="intro-title">Quem leva o especialzinho no café? xi xi xi</h1>
           <p className="intro__text">
             Cadastre a turma e os itens, marque restrições e preferências, escolha a data e
             sorteie. O resultado fica equilibrado entre as pessoas e é salvo no histórico.
           </p>
         </section>
+
+        <nav className="section-nav" aria-label="Seções do café">
+          <a href="#organizar">Organizar</a>
+          <a href="#resultado">Resultado</a>
+          <a href="#historico">Histórico</a>
+        </nav>
 
         {bootNotice && (
           <div className="notice notice--warning" role="alert">
@@ -291,7 +299,7 @@ export default function App() {
           onDraw={draw}
         />
 
-        <div className="prep">
+        <div id="organizar" className="prep">
           <ParticipantsPanel
             participants={participants}
             onAdd={addParticipant}

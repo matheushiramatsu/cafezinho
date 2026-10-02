@@ -35,7 +35,7 @@ export default function ResultPanel({ result, invalidated, runNote, onClear }: P
   }
 
   return (
-    <section className="panel result" aria-labelledby="result-title">
+    <section id="resultado" className="panel result" aria-labelledby="result-title">
       <div className="panel__head result__head">
         <div>
           <h2 id="result-title" tabIndex={-1}>

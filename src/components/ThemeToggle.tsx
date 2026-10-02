@@ -21,6 +21,8 @@ export default function ThemeToggle({ theme, onChange }: Props) {
           type="button"
           className="segmented__button"
           aria-pressed={theme === option.value}
+          aria-label={option.label}
+          title={option.label}
           onClick={() => onChange(option.value)}
         >
           <Icon name={option.icon} size={16} />

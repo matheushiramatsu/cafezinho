@@ -27,7 +27,7 @@ export default function HistoryPanel({ history, onShow, onRemove, onClear, annou
   }, [confirmClear])
 
   return (
-    <section className="panel" aria-labelledby="history-title">
+    <section id="historico" className="panel" aria-labelledby="history-title">
       <div className="panel__head">
         <h2 id="history-title">Histórico</h2>
         <p className="meta">
