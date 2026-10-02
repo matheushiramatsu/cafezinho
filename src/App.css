@@ -793,14 +793,6 @@ select.input {
   overflow-wrap: anywhere;
 }
 
-.history__footer {
-  display: flex;
-}
-
-.history__footer .row {
-  width: 100%;
-}
-
 .row--history {
   gap: var(--space-3);
 }

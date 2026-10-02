@@ -82,8 +82,6 @@ export type Action =
   | { type: 'drawSucceeded'; snapshot: DrawSnapshot }
   | { type: 'showFromHistory'; id: string }
   | { type: 'clearResult' }
-  | { type: 'removeHistory'; id: string }
-  | { type: 'clearHistory' }
 
 /** Alteração de cadastro/data: invalida o resultado atual. */
 function edited(state: AppState, patch: Partial<AppData>): AppState {
@@ -216,15 +214,6 @@ export function reducer(state: AppState, action: Action): AppState {
     }
     case 'clearResult':
       return { ...state, result: null, invalidated: false }
-    case 'removeHistory':
-      // O resultado atual vive no histórico: removê-lo da lista o tira da tela.
-      return {
-        ...state,
-        history: state.history.filter((h) => h.id !== action.id),
-        result: state.result?.id === action.id ? null : state.result,
-      }
-    case 'clearHistory':
-      return { ...state, history: [], result: null }
     default:
       return state
   }

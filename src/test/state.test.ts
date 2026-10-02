@@ -170,13 +170,16 @@ describe('snapshots do histórico', () => {
     expect(shown.history[0].items[0].name).toBe('Pão')
   })
 
-  it('cada sorteio entra no histórico (mais recente primeiro) e pode ser removido', () => {
+  it('cada sorteio entra no histórico, preservando os anteriores, mais recente primeiro', () => {
     let state = draw(baseState(), 'h1', 1)
     state = draw(state, 'h2', 2)
     expect(state.history.map((h) => h.id)).toEqual(['h2', 'h1'])
-    state = reducer(state, { type: 'removeHistory', id: 'h2' })
-    expect(state.history.map((h) => h.id)).toEqual(['h1'])
-    expect(reducer(state, { type: 'clearHistory' }).history).toEqual([])
+  })
+
+  it.each(['removeHistory', 'clearHistory'])('ignora a antiga ação de exclusão %s', (type) => {
+    const state = draw(draw(baseState(), 'h1'), 'h2', 2)
+    const legacyAction = { type, id: 'h2' } as unknown as Action
+    expect(reducer(state, legacyAction)).toBe(state)
   })
 
   it('sorteio impossível não altera resultado nem histórico', () => {

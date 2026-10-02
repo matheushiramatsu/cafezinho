@@ -178,12 +178,13 @@ describe('restauração do resultado atual após recarregar', () => {
     expect(createState(stored).result).toBeNull()
   })
 
-  it('excluir do histórico o sorteio exibido remove o resultado; limpar histórico também', () => {
-    const drawn = draw(baseState(), 'h1')
-    expect(reducer(drawn, { type: 'removeHistory', id: 'h1' }).result).toBeNull()
-    expect(reducer(drawn, { type: 'clearHistory' }).result).toBeNull()
-    const two = draw(drawn, 'h2', 2)
-    expect(reducer(two, { type: 'removeHistory', id: 'h1' }).result?.id).toBe('h2')
+  it('limpar a visualização permite reabrir qualquer sorteio salvo', () => {
+    const state = draw(draw(baseState(), 'h1'), 'h2', 2)
+    const cleared = reducer(state, { type: 'clearResult' })
+    expect(cleared.result).toBeNull()
+    expect(cleared.history).toEqual(state.history)
+    expect(reducer(cleared, { type: 'showFromHistory', id: 'h1' }).result?.id).toBe('h1')
+    expect(reducer(cleared, { type: 'showFromHistory', id: 'h2' }).result?.id).toBe('h2')
   })
 })
 

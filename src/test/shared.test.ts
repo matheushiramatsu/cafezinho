@@ -69,7 +69,7 @@ describe('dados compartilhados', () => {
       write: async (document) => { writes++; return document },
     })
     await store.refresh()
-    store.dispatch({ type: 'clearHistory' })
+    store.dispatch({ type: 'setDate', date: '2026-10-14' })
     expect(store.getSnapshot().ready).toBe(false)
     expect(store.getSnapshot().status).toBe('offline')
     expect(writes).toBe(0)

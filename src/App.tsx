@@ -336,11 +336,6 @@ export default function App() {
               focusResultNext.current = true
               dispatch({ type: 'showFromHistory', id })
             }}
-            onRemove={(id) => dispatch({ type: 'removeHistory', id })}
-            onClear={() => {
-              dispatch({ type: 'clearHistory' })
-              announce('Histórico apagado.')
-            }}
           />
         </fieldset>
       </main>
