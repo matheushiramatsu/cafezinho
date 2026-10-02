@@ -191,7 +191,7 @@ describe('visões e texto de compartilhamento', () => {
 
   it('texto copiável traz data, pessoas e itens', () => {
     const text = formatShareText(sampleData().history[0])
-    expect(text).toContain('*Cafezinho ESL — ')
+    expect(text).toContain('*Cafezinho — ')
     expect(text).toContain('14 de outubro de 2026')
     expect(text).toContain('*Por pessoa*')
     expect(text).toContain('*Por item*')

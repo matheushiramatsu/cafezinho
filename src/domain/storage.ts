@@ -14,7 +14,7 @@ import { collapseSpaces, normalizeKey } from './text.js'
 export const STORAGE_KEY = 'cafezinho:v1'
 export const BACKUP_KEY = 'cafezinho:v1:backup'
 export const THEME_KEY = 'cafezinho:theme'
-// Chaves de antes do renome para Cafezinho ESL: lidas como fallback e migradas no primeiro salvamento.
+// Chaves de antes do renome para Cafezinho: lidas como fallback e migradas no primeiro salvamento.
 export const LEGACY_STORAGE_KEY = 'cafe-da-firma:v1'
 export const LEGACY_THEME_KEY = 'cafe-da-firma:theme'
 export const STORAGE_VERSION = 1

@@ -1,6 +1,6 @@
-# Cafezinho ESL
+# Cafezinho
 
-O Cafezinho ESL sorteia quem leva o quê no café da equipe. React + TypeScript + Vite na interface, servidor Node.js e SQLite para compartilhar participantes, itens, regras, data, resultados e histórico entre as pessoas que acessam **o mesmo servidor**. A preferência de tema continua individual no navegador.
+O Cafezinho sorteia quem leva o quê no café da equipe. React + TypeScript + Vite na interface, servidor Node.js e SQLite para compartilhar participantes, itens, regras, data, resultados e histórico entre as pessoas que acessam **o mesmo servidor**. A preferência de tema continua individual no navegador.
 
 ## Executar
 
@@ -95,7 +95,7 @@ Os testes cobrem regras e sorteio, restauração, SQLite, API HTTP, concorrênci
 - `server/`: API HTTP, validação e persistência SQLite.
 - `src/domain/`: regras de negócio e cliente de sincronização.
 - `src/components/`, `src/hooks/`: interface.
-- `src/index.css`: tokens de cor (claro/escuro) com a paleta da ESL (eslsistemas.com.br).
-- `src/assets/esl-logo-branca.png`, `public/favicon.png`: logo e ícone da ESL.
+- `src/index.css`: tokens de cor (claro/escuro).
+- `public/favicon.svg`: ícone de xícara do Cafezinho.
 
 As chaves antigas do `localStorage` são lidas para importação, sem substituir o banco compartilhado nem apagar a cópia original.

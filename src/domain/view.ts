@@ -45,7 +45,7 @@ export function byItem(snapshot: DrawSnapshot): ItemRow[] {
 
 /** Texto pronto para WhatsApp/Slack (`*negrito*` funciona nos dois). */
 export function formatShareText(snapshot: DrawSnapshot): string {
-  const lines: string[] = [`*Cafezinho ESL — ${formatDateLong(snapshot.coffeeDate)}*`, '']
+  const lines: string[] = [`*Cafezinho — ${formatDateLong(snapshot.coffeeDate)}*`, '']
   lines.push('*Por pessoa*')
   for (const row of byPerson(snapshot)) {
     lines.push(`• ${row.name}: ${row.itemNames.length ? row.itemNames.join(', ') : 'nada desta vez'}`)

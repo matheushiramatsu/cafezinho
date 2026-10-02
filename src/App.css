@@ -1,4 +1,4 @@
-/* Layout e componentes do Cafezinho ESL. Ritmo de espaçamento: 4/8/12/16/24/32/48. */
+/* Layout e componentes do Cafezinho. Ritmo de espaçamento: 4/8/12/16/24/32/48. */
 
 .app {
   min-height: 100vh;
@@ -65,19 +65,11 @@
   color: var(--topbar-text);
 }
 
-.brand__logo {
-  display: block;
-  height: 32px;
-  width: auto;
-}
-
 .print-brand {
   display: none;
 }
 
 .brand__name {
-  padding-left: var(--space-3);
-  border-left: 1px solid var(--topbar-line);
   line-height: 1.2;
 }
 
@@ -1015,7 +1007,6 @@ select.input {
   }
 
   .brand__name {
-    padding-left: var(--space-2);
     font-family: var(--font-sans);
   }
 

@@ -1,6 +1,6 @@
 /*
- * Tokens semânticos do design system Anil (estrutura shadcn/ui) com a paleta da ESL
- * (eslsistemas.com.br). Fontes empacotadas no app: sem requisições a serviços externos.
+ * Tokens semânticos do design system Anil (estrutura shadcn/ui).
+ * Fontes empacotadas no app: sem requisições a serviços externos.
  */
 @import '@fontsource-variable/geist/wght.css';
 @import '@fontsource-variable/bricolage-grotesque/opsz.css';
@@ -14,7 +14,7 @@
   --popover: #ffffff;
   --popover-foreground: #1d1e23;
 
-  /* Marca ESL */
+  /* Cores principais */
   --primary: #475cc7;
   --primary-foreground: #ffffff;
   --primary-hover: #33479e;
@@ -39,7 +39,7 @@
   --ring: #475cc7;
   --tabs-active: #ffffff;
 
-  /* Faixa do cabeçalho (logo branca da ESL sobre azul) */
+  /* Faixa do cabeçalho */
   --topbar-bg: #33479e;
   --topbar-text: #ffffff;
   --topbar-line: rgb(255 255 255 / 0.55);
