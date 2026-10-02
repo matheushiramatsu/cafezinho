@@ -1,15 +1,16 @@
 import type { ThemePreference } from '../domain/storage'
 import Icon, { type IconName } from './Icon'
 
-const OPTIONS: Array<{ value: ThemePreference; label: string; icon: IconName }> = [
-  { value: 'system', label: 'Sistema', icon: 'monitor' },
+type ManualTheme = Exclude<ThemePreference, 'system'>
+
+const OPTIONS: Array<{ value: ManualTheme; label: string; icon: IconName }> = [
   { value: 'light', label: 'Claro', icon: 'sun' },
   { value: 'dark', label: 'Escuro', icon: 'moon' },
 ]
 
 interface Props {
-  theme: ThemePreference
-  onChange: (theme: ThemePreference) => void
+  theme: ManualTheme
+  onChange: (theme: ManualTheme) => void
 }
 
 export default function ThemeToggle({ theme, onChange }: Props) {
@@ -26,7 +27,6 @@ export default function ThemeToggle({ theme, onChange }: Props) {
           onClick={() => onChange(option.value)}
         >
           <Icon name={option.icon} size={16} />
-          <span className="segmented__label">{option.label}</span>
         </button>
       ))}
     </div>

@@ -85,28 +85,6 @@ export default function ParticipantsPanel({
         </p>
       </div>
 
-      {participants.length === 0 ? (
-        <div className="empty">
-          <p className="empty__title">Ninguém na lista ainda</p>
-          <p>Adicione o primeiro nome ou importe a lista da turma.</p>
-        </div>
-      ) : (
-        <ul className="rows" aria-label="Lista de participantes">
-          {participants.map((participant) => (
-            <ParticipantRow
-              key={participant.id}
-              participant={participant}
-              onRename={onRename}
-              onRemove={(id) => {
-                onRemove(id)
-                addInputRef.current?.focus()
-              }}
-              onOpenRules={onOpenRules}
-            />
-          ))}
-        </ul>
-      )}
-
       <form onSubmit={submit} noValidate className="entry-form">
         <div className="field">
           <label htmlFor="participant-name" className="sr-only">Novo participante</label>
@@ -141,6 +119,28 @@ export default function ParticipantsPanel({
           )}
         </div>
       </form>
+
+      {participants.length === 0 ? (
+        <div className="empty">
+          <p className="empty__title">Ninguém na lista ainda</p>
+          <p>Adicione o primeiro nome ou importe a lista da turma.</p>
+        </div>
+      ) : (
+        <ul className="rows" aria-label="Lista de participantes">
+          {participants.map((participant) => (
+            <ParticipantRow
+              key={participant.id}
+              participant={participant}
+              onRename={onRename}
+              onRemove={(id) => {
+                onRemove(id)
+                addInputRef.current?.focus()
+              }}
+              onOpenRules={onOpenRules}
+            />
+          ))}
+        </ul>
+      )}
 
       <details className="disclosure">
         <summary>

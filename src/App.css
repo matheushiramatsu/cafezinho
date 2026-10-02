@@ -1,6 +1,7 @@
 /* Uma folha de organização, com cadastros à esquerda e o encontro à direita. */
 
 .app {
+  --topbar-height: 89px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,11 +26,25 @@
 
 /* ---------- Cabeçalho ---------- */
 
+.topbar-slot {
+  height: var(--topbar-height);
+  flex-shrink: 0;
+}
+
 .topbar {
+  --nav-expand: 1;
+  --nav-inset: max(12px, calc((100% - 1120px) / 2));
+  position: fixed;
+  top: calc(8px * (1 - var(--nav-expand)));
+  left: calc(var(--nav-inset) * (1 - var(--nav-expand)));
+  right: calc(var(--nav-inset) * (1 - var(--nav-expand)));
+  z-index: 5;
   background: var(--topbar-bg);
   color: var(--topbar-text);
-  border-top: 4px solid var(--primary);
+  border-top: calc(1px + 3px * var(--nav-expand)) solid var(--primary);
   border-bottom: 1px solid var(--border);
+  border-inline: calc(1px * (1 - var(--nav-expand))) solid var(--border);
+  border-radius: calc(12px * (1 - var(--nav-expand)));
 }
 
 .topbar :focus-visible {
@@ -50,19 +65,28 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  min-height: 84px;
-  padding-block: var(--space-2);
+  min-height: calc(56px + 28px * var(--nav-expand));
+  padding-block: calc(4px + 4px * var(--nav-expand));
+}
+
+.topbar__theme {
+  flex-shrink: 0;
+}
+
+.topbar .topbar__theme-toggle {
+  display: none;
+  min-width: var(--target);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: calc(8px + 4px * var(--nav-expand));
   min-width: 0;
   font-family: var(--font-display);
   font-optical-sizing: auto;
   font-weight: 700;
-  font-size: 28px;
+  font-size: calc(22px + 6px * var(--nav-expand));
   letter-spacing: -0.05em;
   color: var(--topbar-text);
 }
@@ -71,8 +95,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: calc(28px + 8px * var(--nav-expand));
+  height: calc(28px + 8px * var(--nav-expand));
   border: 1px solid var(--primary);
   border-radius: 50%;
   color: var(--brand-ink);
@@ -102,10 +126,6 @@
 /* ---------- Introdução ---------- */
 
 .intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 48px;
   padding-block: 16px 40px;
   border-bottom: 1px solid var(--border);
 }
@@ -129,34 +149,8 @@
   font-weight: 400;
 }
 
-.intro__text {
-  color: var(--muted-foreground);
-  font-size: 15px;
-  line-height: 1.65;
-  max-width: 47ch;
-}
-
-.intro__eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--brand-ink);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.intro__eyebrow > span {
-  width: 6px;
-  height: 6px;
-  background: var(--primary);
-  border-radius: 50%;
-}
-
 .intro__aside {
-  align-self: end;
-  padding-bottom: 5px;
+  align-self: flex-start;
   color: var(--muted-foreground);
   font-family: var(--font-display);
   font-size: 18px;
@@ -189,7 +183,11 @@
 #organizar,
 #resultado,
 #historico {
-  scroll-margin-top: var(--space-6);
+  scroll-margin-top: calc(var(--topbar-height) + var(--space-6));
+}
+
+#result-title {
+  scroll-margin-top: calc(var(--topbar-height) + var(--space-6));
 }
 
 /* ---------- Painéis ---------- */
@@ -262,7 +260,7 @@
 
 .draw-rail {
   position: sticky;
-  top: 24px;
+  top: calc(var(--topbar-height) + var(--space-6));
 }
 
 .draw-rail__note {
@@ -550,10 +548,6 @@ select.input {
   border-color: transparent;
   color: var(--secondary-foreground);
   box-shadow: var(--shadow-xs);
-}
-
-.segmented__label {
-  display: none;
 }
 
 /* ---------- Barra de sorteio ---------- */
@@ -1256,10 +1250,6 @@ select.input {
 }
 
 @media (min-width: 960px) {
-  .segmented__label {
-    display: inline;
-  }
-
   .rules__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1278,10 +1268,58 @@ select.input {
 }
 
 @media (max-width: 719px) {
+  .app {
+    --topbar-height: 114px;
+  }
+
   .topbar__inner {
     flex-wrap: wrap;
-    padding-block: 12px 0;
+    padding-block: calc(4px + 8px * var(--nav-expand)) 0;
     gap: 4px 12px;
+  }
+
+  .topbar[data-compact='true'] .topbar__inner {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 4px 12px;
+  }
+
+  .topbar[data-compact='true'] .brand {
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  .topbar[data-compact='true'] .brand__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .topbar[data-compact='true'] .section-nav {
+    order: 0;
+    width: auto;
+    flex: 1;
+    gap: 8px;
+  }
+
+  .topbar[data-compact='true'] .section-nav a {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+    padding-block: 0;
+    font-size: 11px;
+  }
+
+  .topbar[data-compact='true'] .segmented {
+    display: none;
+  }
+
+  .topbar[data-compact='true'] .topbar__theme-toggle {
+    display: inline-flex;
+    padding: 0;
   }
 
   .section-nav {
@@ -1291,12 +1329,7 @@ select.input {
   }
 
   .intro {
-    grid-template-columns: minmax(0, 1fr);
     padding-block: 4px 28px;
-  }
-
-  .intro__aside {
-    display: none;
   }
 
   .workspace {
@@ -1342,7 +1375,7 @@ select.input {
 @media (max-width: 519px) {
   .brand {
     gap: var(--space-2);
-    font-size: 26px;
+    font-size: calc(22px + 4px * var(--nav-expand));
   }
 
   .brand__name {
@@ -1432,6 +1465,7 @@ select.input {
     font-size: 12pt;
   }
 
+  .topbar-slot,
   .topbar,
   .skip-link,
   .intro,

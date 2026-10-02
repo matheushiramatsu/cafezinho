@@ -1,21 +1,21 @@
 import { useCallback, useEffect, useState } from 'react'
 import { loadTheme, saveTheme, type ThemePreference } from '../domain/storage'
 
-function applyTheme(theme: ThemePreference) {
-  const root = document.documentElement
-  if (theme === 'system') delete root.dataset.theme
-  else root.dataset.theme = theme
-}
+type ManualTheme = Exclude<ThemePreference, 'system'>
 
-/** Preferência de tema: sistema por padrão, com escolha manual persistida. */
-export function useTheme(): [ThemePreference, (theme: ThemePreference) => void] {
-  const [theme, setThemeState] = useState<ThemePreference>(() => loadTheme())
+/** Usa o tema salvo ou resolve a preferência inicial para claro ou escuro. */
+export function useTheme(): [ManualTheme, (theme: ManualTheme) => void] {
+  const [theme, setThemeState] = useState<ManualTheme>(() => {
+    const saved = loadTheme()
+    if (saved !== 'system') return saved
+    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  })
 
   useEffect(() => {
-    applyTheme(theme)
+    document.documentElement.dataset.theme = theme
   }, [theme])
 
-  const setTheme = useCallback((next: ThemePreference) => {
+  const setTheme = useCallback((next: ManualTheme) => {
     setThemeState(next)
     saveTheme(next)
   }, [])

@@ -56,28 +56,6 @@ export default function ItemsPanel({ items, onAdd, onUpdate, onRemove }: Props) 
         </p>
       </div>
 
-      {items.length === 0 ? (
-        <div className="empty">
-          <p className="empty__title">Nenhum item cadastrado</p>
-          <p>Adicione o que entra no café (pão, suco, frutas) e quantas pessoas levam cada um.</p>
-        </div>
-      ) : (
-        <ul className="rows" aria-label="Lista de itens">
-          {items.map((item) => (
-            <ItemRow
-              key={item.id}
-              item={item}
-              categories={categories}
-              onUpdate={onUpdate}
-              onRemove={(id) => {
-                onRemove(id)
-                nameRef.current?.focus()
-              }}
-            />
-          ))}
-        </ul>
-      )}
-
       <form onSubmit={submit} noValidate className="entry-form">
         <div className="item-entry entry-line">
           <div className="field item-form__name">
@@ -164,6 +142,28 @@ export default function ItemsPanel({ items, onAdd, onUpdate, onRemove }: Props) 
           </p>
         )}
       </form>
+
+      {items.length === 0 ? (
+        <div className="empty">
+          <p className="empty__title">Nenhum item cadastrado</p>
+          <p>Adicione o que entra no café (pão, suco, frutas) e quantas pessoas levam cada um.</p>
+        </div>
+      ) : (
+        <ul className="rows" aria-label="Lista de itens">
+          {items.map((item) => (
+            <ItemRow
+              key={item.id}
+              item={item}
+              categories={categories}
+              onUpdate={onUpdate}
+              onRemove={(id) => {
+                onRemove(id)
+                nameRef.current?.focus()
+              }}
+            />
+          ))}
+        </ul>
+      )}
 
     </section>
   )

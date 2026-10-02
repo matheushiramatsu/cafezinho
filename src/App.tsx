@@ -3,11 +3,11 @@ import DrawBar from './components/DrawBar'
 import HistoryPanel from './components/HistoryPanel'
 import Icon from './components/Icon'
 import ItemsPanel, { type ItemErrors } from './components/ItemsPanel'
+import Navbar from './components/Navbar'
 import ParticipantsPanel from './components/ParticipantsPanel'
 import ResultPanel from './components/ResultPanel'
 import RulesPanel from './components/RulesPanel'
 import SharingPanel from './components/SharingPanel'
-import ThemeToggle from './components/ThemeToggle'
 import { runDraw, type DrawError } from './domain/draw'
 import { formatDateLong, formatDateShort } from './domain/date'
 import { makeId } from './domain/ids'
@@ -240,33 +240,15 @@ export default function App() {
         Ir para o conteúdo
       </a>
 
-      <header className="topbar">
-        <div className="topbar__inner">
-          <p className="brand">
-            <span className="brand__mark"><Icon name="coffee" size={20} /></span>
-            <span className="brand__name">Cafezinho</span>
-          </p>
-          <nav className="section-nav" aria-label="Seções do café">
-            <a href="#organizar">Organizar</a>
-            <a href="#resultado">Resultado</a>
-            <a href="#historico">Histórico</a>
-          </nav>
-          <ThemeToggle theme={theme} onChange={setTheme} />
-        </div>
-      </header>
+      <Navbar theme={theme} onThemeChange={setTheme} />
 
       <main id="main" className="container">
         <p className="print-brand">Cafezinho</p>
         <section className="intro" aria-labelledby="intro-title">
           <div className="intro__copy">
-            <p className="intro__eyebrow"><span aria-hidden="true" />Café da equipe</p>
             <h1 id="intro-title">Quem leva o <em>especialzinho</em> no café?</h1>
-            <p className="intro__text">
-              Cada um traz um pouco. A turma toda compartilha.
-              Organize a lista e deixe a divisão com a gente.
-            </p>
+            <span className="intro__aside" aria-hidden="true">xi xi xi</span>
           </div>
-          <span className="intro__aside" aria-hidden="true">xi xi xi</span>
         </section>
 
         {bootNotice && (
