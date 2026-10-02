@@ -1,7 +1,6 @@
 import type { FormEvent } from 'react'
 import type { DrawError } from '../domain/draw'
 import { MAX_YEAR, MIN_YEAR } from '../domain/date'
-import { plural } from '../domain/text'
 import Icon from './Icon'
 
 interface Props {
@@ -34,13 +33,19 @@ export default function DrawBar({
 
   return (
     <section className="drawbar" aria-labelledby="draw-title">
-      <h2 id="draw-title" className="sr-only">
-        Data e sorteio
-      </h2>
+      <div className="drawbar__heading">
+        <p className="drawbar__eyebrow">Sorteio</p>
+        <h2 id="draw-title">Próximo café</h2>
+      </div>
+      <dl id="draw-summary" className="drawbar__counts">
+        <div><dt>Pessoas</dt><dd>{participantCount.toString().padStart(2, '0')}</dd></div>
+        <div><dt>Itens</dt><dd>{itemCount.toString().padStart(2, '0')}</dd></div>
+        <div><dt>Unidades</dt><dd>{unitCount.toString().padStart(2, '0')}</dd></div>
+      </dl>
       <form onSubmit={submit} noValidate className="drawbar__form">
         <div className="field drawbar__date">
           <label htmlFor="coffee-date">
-            Data do café <span className="required">(obrigatória)</span>
+            Data do café <span className="sr-only">(obrigatória)</span>
           </label>
           <input
             id="coffee-date"
@@ -57,14 +62,10 @@ export default function DrawBar({
         </div>
         <button type="submit" className="btn btn--primary btn--lg drawbar__cta">
           <Icon name="shuffle" size={20} />
-          {hasResult ? 'Sortear novamente' : 'Sortear'}
+          {hasResult ? 'Sortear novamente' : 'Sortear o café'}
         </button>
       </form>
-      <p id="draw-summary" className="meta drawbar__summary">
-        {participantCount} {plural(participantCount, 'participante', 'participantes')} ·{' '}
-        {itemCount} {plural(itemCount, 'item', 'itens')} ({unitCount}{' '}
-        {plural(unitCount, 'unidade', 'unidades')} a distribuir)
-      </p>
+      <p className="drawbar__summary">O resultado fica salvo no histórico.</p>
       {dateError && (
         <p id="coffee-date-error" className="field-error" role="alert">
           <Icon name="alert" size={16} />

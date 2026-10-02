@@ -1,40 +1,41 @@
-/* Paleta neutra e tipografia Geist, com fontes locais. */
+/* Azul Cafezinho. As cores de marca seguem a referência nos dois temas. */
 @import '@fontsource-variable/geist/wght.css';
 
 :root {
-  --background: #fafafa;
-  --foreground: #171717;
+  --background: #f8f9fc;
+  --foreground: #1c2340;
   --card: #ffffff;
-  --card-foreground: #171717;
+  --card-foreground: #1c2340;
   --popover: #ffffff;
   --popover-foreground: #171717;
-  --primary: #171717;
+  --primary: #002ae6;
   --primary-foreground: #ffffff;
-  --primary-hover: #333333;
-  --primary-active: #000000;
-  --secondary: #f5f5f5;
-  --secondary-foreground: #171717;
-  --muted: #f5f5f5;
-  --muted-foreground: #666666;
-  --accent: #f0f0f0;
-  --accent-foreground: #171717;
+  --primary-hover: #0023bf;
+  --primary-active: #001da0;
+  --secondary: #eef1fe;
+  --secondary-foreground: #000c80;
+  --muted: #f1f3f8;
+  --muted-foreground: #656c80;
+  --accent: #eef1fe;
+  --accent-foreground: #000c80;
+  --brand-ink: #0023bf;
   --destructive: #c62828;
   --destructive-foreground: #ffffff;
   --destructive-subtle: #fff5f5;
   --success: #18713b;
   --success-bg: #f0faf3;
-  --border: #e5e5e5;
-  --input: #949494;
-  --ring: #737373;
+  --border: #dce1ed;
+  --input: #929bb3;
+  --ring: #002ae6;
   --tabs-active: #ffffff;
   --topbar-bg: #ffffff;
-  --topbar-text: #171717;
-  --topbar-line: #e5e5e5;
-  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.04);
+  --topbar-text: #000c80;
+  --topbar-line: #dce1ed;
+  --shadow-xs: none;
   --shadow-sm: none;
   --font-sans: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, -apple-system,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-display: var(--font-sans);
+  --font-display: 'Palatino Linotype', 'Book Antiqua', Palatino, 'Iowan Old Style', Georgia, serif;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -43,9 +44,9 @@
   --space-8: 32px;
   --space-12: 48px;
   --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 8px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
   --radius-full: 9999px;
   --ease: 150ms ease;
   --target: 44px;
@@ -54,34 +55,35 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --card: #111111;
-    --card-foreground: #ededed;
-    --popover: #171717;
+    --background: #0e1220;
+    --foreground: #edf0fa;
+    --card: #141a2b;
+    --card-foreground: #edf0fa;
+    --popover: #141a2b;
     --popover-foreground: #ededed;
-    --primary: #ededed;
-    --primary-foreground: #0a0a0a;
-    --primary-hover: #d4d4d4;
-    --primary-active: #ffffff;
-    --secondary: #1a1a1a;
-    --secondary-foreground: #ededed;
-    --muted: #1a1a1a;
-    --muted-foreground: #a1a1a1;
-    --accent: #242424;
-    --accent-foreground: #ededed;
+    --primary: #002ae6;
+    --primary-foreground: #ffffff;
+    --primary-hover: #0028d9;
+    --primary-active: #0023bf;
+    --secondary: #0a1a6b;
+    --secondary-foreground: #ffffff;
+    --muted: #192135;
+    --muted-foreground: #a6aec5;
+    --accent: #0a1a6b;
+    --accent-foreground: #ffffff;
+    --brand-ink: #a5b7ff;
     --destructive: #ff8080;
     --destructive-foreground: #0a0a0a;
     --destructive-subtle: #2a1414;
     --success: #70d694;
     --success-bg: #11251a;
-    --border: #2a2a2a;
-    --input: #707070;
-    --ring: #a1a1a1;
-    --tabs-active: #242424;
-    --topbar-bg: #0a0a0a;
-    --topbar-text: #ededed;
-    --topbar-line: #2a2a2a;
+    --border: #2c354b;
+    --input: #64708c;
+    --ring: #8ba4ff;
+    --tabs-active: #0a1a6b;
+    --topbar-bg: #0e1220;
+    --topbar-text: #edf0fa;
+    --topbar-line: #2c354b;
     --shadow-xs: none;
     --shadow-sm: none;
     color-scheme: dark;
@@ -89,34 +91,35 @@
 }
 
 :root[data-theme='dark'] {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --card: #111111;
-  --card-foreground: #ededed;
-  --popover: #171717;
+  --background: #0e1220;
+  --foreground: #edf0fa;
+  --card: #141a2b;
+  --card-foreground: #edf0fa;
+  --popover: #141a2b;
   --popover-foreground: #ededed;
-  --primary: #ededed;
-  --primary-foreground: #0a0a0a;
-  --primary-hover: #d4d4d4;
-  --primary-active: #ffffff;
-  --secondary: #1a1a1a;
-  --secondary-foreground: #ededed;
-  --muted: #1a1a1a;
-  --muted-foreground: #a1a1a1;
-  --accent: #242424;
-  --accent-foreground: #ededed;
+  --primary: #002ae6;
+  --primary-foreground: #ffffff;
+  --primary-hover: #0028d9;
+  --primary-active: #0023bf;
+  --secondary: #0a1a6b;
+  --secondary-foreground: #ffffff;
+  --muted: #192135;
+  --muted-foreground: #a6aec5;
+  --accent: #0a1a6b;
+  --accent-foreground: #ffffff;
+  --brand-ink: #a5b7ff;
   --destructive: #ff8080;
   --destructive-foreground: #0a0a0a;
   --destructive-subtle: #2a1414;
   --success: #70d694;
   --success-bg: #11251a;
-  --border: #2a2a2a;
-  --input: #707070;
-  --ring: #a1a1a1;
-  --tabs-active: #242424;
-  --topbar-bg: #0a0a0a;
-  --topbar-text: #ededed;
-  --topbar-line: #2a2a2a;
+  --border: #2c354b;
+  --input: #64708c;
+  --ring: #8ba4ff;
+  --tabs-active: #0a1a6b;
+  --topbar-bg: #0e1220;
+  --topbar-text: #edf0fa;
+  --topbar-line: #2c354b;
   --shadow-xs: none;
   --shadow-sm: none;
   color-scheme: dark;
@@ -158,7 +161,7 @@ legend {
   padding: 0;
 }
 
-/* Uma família tipográfica em toda a interface. */
+/* Títulos em serifas; controles e textos de apoio em Geist. */
 h1,
 h2 {
   font-family: var(--font-display);

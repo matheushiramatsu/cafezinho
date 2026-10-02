@@ -246,6 +246,11 @@ export default function App() {
             <span className="brand__mark"><Icon name="coffee" size={20} /></span>
             <span className="brand__name">Cafezinho</span>
           </p>
+          <nav className="section-nav" aria-label="Seções do café">
+            <a href="#organizar">Organizar</a>
+            <a href="#resultado">Resultado</a>
+            <a href="#historico">Histórico</a>
+          </nav>
           <ThemeToggle theme={theme} onChange={setTheme} />
         </div>
       </header>
@@ -253,19 +258,16 @@ export default function App() {
       <main id="main" className="container">
         <p className="print-brand">Cafezinho</p>
         <section className="intro" aria-labelledby="intro-title">
-          <p className="intro__eyebrow">Café da equipe</p>
-          <h1 id="intro-title">Quem leva o especialzinho no café? xi xi xi</h1>
-          <p className="intro__text">
-            Cadastre a turma e os itens, marque restrições e preferências, escolha a data e
-            sorteie. O resultado fica equilibrado entre as pessoas e é salvo no histórico.
-          </p>
+          <div className="intro__copy">
+            <p className="intro__eyebrow"><span aria-hidden="true" />Café da equipe</p>
+            <h1 id="intro-title">Quem leva o <em>especialzinho</em> no café?</h1>
+            <p className="intro__text">
+              Cada um traz um pouco. A turma toda compartilha.
+              Organize a lista e deixe a divisão com a gente.
+            </p>
+          </div>
+          <span className="intro__aside" aria-hidden="true">xi xi xi</span>
         </section>
-
-        <nav className="section-nav" aria-label="Seções do café">
-          <a href="#organizar">Organizar</a>
-          <a href="#resultado">Resultado</a>
-          <a href="#historico">Histórico</a>
-        </nav>
 
         {bootNotice && (
           <div className="notice notice--warning" role="alert">
@@ -286,72 +288,78 @@ export default function App() {
         )}
 
         <fieldset className="shared-content" disabled={!ready || status === 'conflict'} aria-label="Dados do café">
+          <div id="organizar" className="workspace">
+            <div className="prep">
+              <ParticipantsPanel
+                participants={participants}
+                onAdd={addParticipant}
+                onImport={importParticipants}
+                onRename={renameParticipant}
+                onRemove={removeParticipant}
+                onOpenRules={openRules}
+              />
+              <ItemsPanel
+                items={items}
+                onAdd={addItem}
+                onUpdate={updateItem}
+                onRemove={removeItem}
+              />
+              <RulesPanel
+                participants={participants}
+                items={items}
+                selectedId={rulesFor}
+                selectRef={rulesSelectRef}
+                onSelect={setRulesFor}
+                onTogglePreferred={(participantId, itemId) =>
+                  edit({ type: 'togglePreferred', participantId, itemId })
+                }
+                onToggleRestrictedItem={toggleRestrictedItem}
+                onToggleRestrictedCategory={toggleRestrictedCategory}
+              />
+            </div>
 
-        <DrawBar
-          date={coffeeDate}
-          participantCount={participants.length}
-          itemCount={items.length}
-          unitCount={unitCount}
-          hasResult={result !== null}
-          dateError={dateError}
-          drawError={drawError}
-          onDateChange={(date) => edit({ type: 'setDate', date })}
-          onDraw={draw}
-        />
+            <aside className="draw-rail" aria-label="Preparar sorteio">
+              <DrawBar
+                date={coffeeDate}
+                participantCount={participants.length}
+                itemCount={items.length}
+                unitCount={unitCount}
+                hasResult={result !== null}
+                dateError={dateError}
+                drawError={drawError}
+                onDateChange={(date) => edit({ type: 'setDate', date })}
+                onDraw={draw}
+              />
+              <p className="draw-rail__note">
+                <Icon name="coffee" size={18} />
+                A divisão respeita as regras de cada pessoa e evita repetir os pares do último café sempre que possível.
+              </p>
+            </aside>
+          </div>
 
-        <div id="organizar" className="prep">
-          <ParticipantsPanel
-            participants={participants}
-            onAdd={addParticipant}
-            onImport={importParticipants}
-            onRename={renameParticipant}
-            onRemove={removeParticipant}
-            onOpenRules={openRules}
+          <ResultPanel
+            result={result}
+            invalidated={invalidated}
+            runNote={visibleRunNote}
+            onClear={() => {
+              dispatch({ type: 'clearResult' })
+              announce('Resultado limpo. Cadastros e histórico foram mantidos.')
+            }}
           />
-          <ItemsPanel
-            items={items}
-            onAdd={addItem}
-            onUpdate={updateItem}
-            onRemove={removeItem}
+
+          <HistoryPanel
+            history={history}
+            announce={announce}
+            onShow={(id) => {
+              focusResultNext.current = true
+              dispatch({ type: 'showFromHistory', id })
+            }}
+            onRemove={(id) => dispatch({ type: 'removeHistory', id })}
+            onClear={() => {
+              dispatch({ type: 'clearHistory' })
+              announce('Histórico apagado.')
+            }}
           />
-        </div>
-
-        <RulesPanel
-          participants={participants}
-          items={items}
-          selectedId={rulesFor}
-          selectRef={rulesSelectRef}
-          onSelect={setRulesFor}
-          onTogglePreferred={(participantId, itemId) =>
-            edit({ type: 'togglePreferred', participantId, itemId })
-          }
-          onToggleRestrictedItem={toggleRestrictedItem}
-          onToggleRestrictedCategory={toggleRestrictedCategory}
-        />
-
-        <ResultPanel
-          result={result}
-          invalidated={invalidated}
-          runNote={visibleRunNote}
-          onClear={() => {
-            dispatch({ type: 'clearResult' })
-            announce('Resultado limpo. Cadastros e histórico foram mantidos.')
-          }}
-        />
-
-        <HistoryPanel
-          history={history}
-          announce={announce}
-          onShow={(id) => {
-            focusResultNext.current = true
-            dispatch({ type: 'showFromHistory', id })
-          }}
-          onRemove={(id) => dispatch({ type: 'removeHistory', id })}
-          onClear={() => {
-            dispatch({ type: 'clearHistory' })
-            announce('Histórico apagado.')
-          }}
-        />
         </fieldset>
       </main>
 

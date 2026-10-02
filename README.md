@@ -95,7 +95,7 @@ Os testes cobrem regras e sorteio, restauração, SQLite, API HTTP, concorrênci
 - `server/`: API HTTP, validação e persistência SQLite.
 - `src/domain/`: regras de negócio e cliente de sincronização.
 - `src/components/`, `src/hooks/`: interface.
-- `src/index.css`: paleta neutra (claro/escuro) e tipografia Geist com fontes locais.
+- `src/index.css`: paleta azul (claro/escuro), tipografia Geist local para os controles e títulos em serifas do sistema.
 - `public/favicon.svg`: ícone de xícara do Cafezinho.
 
 As chaves antigas do `localStorage` são lidas para importação, sem substituir o banco compartilhado nem apagar a cópia original.

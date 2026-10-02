@@ -71,18 +71,46 @@ export default function ParticipantsPanel({
   }
 
   return (
-    <section className="panel" aria-labelledby="participants-title">
+    <section className="panel panel--register" aria-labelledby="participants-title">
       <div className="panel__head">
-        <h2 id="participants-title">Participantes</h2>
+        <div className="panel__heading">
+          <span className="section-number" aria-hidden="true">01</span>
+          <div>
+            <h2 id="participants-title">Quem vem?</h2>
+            <p className="hint">A lista de participantes do café.</p>
+          </div>
+        </div>
         <p className="meta">
           {participants.length} {plural(participants.length, 'pessoa', 'pessoas')}
         </p>
       </div>
 
-      <form onSubmit={submit} noValidate className="stack-3">
+      {participants.length === 0 ? (
+        <div className="empty">
+          <p className="empty__title">Ninguém na lista ainda</p>
+          <p>Adicione o primeiro nome ou importe a lista da turma.</p>
+        </div>
+      ) : (
+        <ul className="rows" aria-label="Lista de participantes">
+          {participants.map((participant) => (
+            <ParticipantRow
+              key={participant.id}
+              participant={participant}
+              onRename={onRename}
+              onRemove={(id) => {
+                onRemove(id)
+                addInputRef.current?.focus()
+              }}
+              onOpenRules={onOpenRules}
+            />
+          ))}
+        </ul>
+      )}
+
+      <form onSubmit={submit} noValidate className="entry-form">
         <div className="field">
-          <label htmlFor="participant-name">Novo participante</label>
-          <div className="inline-form">
+          <label htmlFor="participant-name" className="sr-only">Novo participante</label>
+          <div className="inline-form entry-line">
             <input
               ref={addInputRef}
               id="participant-name"
@@ -97,11 +125,11 @@ export default function ParticipantsPanel({
                 setName(event.target.value)
                 if (error) setError(null)
               }}
-              placeholder="Ex.: Ana Souza"
+              placeholder="Nome de quem vem…"
             />
-            <button type="submit" className="btn btn--primary">
+            <button type="submit" className="btn entry-add" aria-label="Adicionar participante">
               <Icon name="plus" />
-              Adicionar
+              <span>Incluir</span>
             </button>
           </div>
           <ParticipantImage name={name} />
@@ -151,27 +179,6 @@ export default function ParticipantsPanel({
         </form>
       </details>
 
-      {participants.length === 0 ? (
-        <div className="empty">
-          <p className="empty__title">Ninguém na lista ainda</p>
-          <p>Adicione um nome acima ou importe uma lista. Depois, cadastre os itens ao lado.</p>
-        </div>
-      ) : (
-        <ul className="rows" aria-label="Lista de participantes">
-          {participants.map((participant) => (
-            <ParticipantRow
-              key={participant.id}
-              participant={participant}
-              onRename={onRename}
-              onRemove={(id) => {
-                onRemove(id)
-                addInputRef.current?.focus()
-              }}
-              onOpenRules={onOpenRules}
-            />
-          ))}
-        </ul>
-      )}
     </section>
   )
 }
@@ -306,6 +313,7 @@ function ParticipantRow({
           className="btn btn--ghost"
           onClick={() => onOpenRules(participant.id)}
           aria-label={`Regras de ${participant.name}`}
+          title={`Regras de ${participant.name}`}
         >
           <Icon name="sliders" />
           <span className="btn__text">Regras</span>
@@ -316,6 +324,7 @@ function ParticipantRow({
           className="btn btn--ghost"
           onClick={startEdit}
           aria-label={`Renomear ${participant.name}`}
+          title={`Renomear ${participant.name}`}
         >
           <Icon name="pencil" />
           <span className="btn__text">Renomear</span>
@@ -325,6 +334,7 @@ function ParticipantRow({
           className="btn btn--ghost btn--danger-text"
           onClick={() => setMode('confirm')}
           aria-label={`Excluir ${participant.name}`}
+          title={`Excluir ${participant.name}`}
         >
           <Icon name="trash" />
           <span className="btn__text">Excluir</span>

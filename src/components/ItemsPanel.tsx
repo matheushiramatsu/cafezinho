@@ -41,98 +41,20 @@ export default function ItemsPanel({ items, onAdd, onUpdate, onRemove }: Props) 
   }
 
   return (
-    <section className="panel" aria-labelledby="items-title">
+    <section className="panel panel--register" aria-labelledby="items-title">
       <div className="panel__head">
-        <h2 id="items-title">Itens do café</h2>
+        <div className="panel__heading">
+          <span className="section-number" aria-hidden="true">02</span>
+          <div>
+            <h2 id="items-title">O que vai à mesa?</h2>
+            <p className="hint">Os itens que a turma vai trazer.</p>
+          </div>
+        </div>
         <p className="meta">
           {items.length} {plural(items.length, 'item', 'itens')} · {total}{' '}
           {plural(total, 'unidade', 'unidades')}
         </p>
       </div>
-
-      <form onSubmit={submit} noValidate className="stack-3">
-        <div className="item-form">
-          <div className="field item-form__name">
-            <label htmlFor="item-name">Novo item</label>
-            <input
-              ref={nameRef}
-              id="item-name"
-              type="text"
-              className="input"
-              value={name}
-              maxLength={MAX_NAME_LENGTH + 20}
-              autoComplete="off"
-              placeholder="Ex.: Pão de queijo"
-              aria-invalid={errors.name ? true : undefined}
-              aria-describedby={errors.name ? 'item-name-error' : undefined}
-              onChange={(event) => {
-                setName(event.target.value)
-                if (errors.name) setErrors({ ...errors, name: undefined })
-              }}
-            />
-          </div>
-          <div className="field item-form__qty">
-            <label htmlFor="item-quantity">Quantidade</label>
-            <input
-              ref={quantityRef}
-              id="item-quantity"
-              type="number"
-              inputMode="numeric"
-              className="input"
-              min={1}
-              max={MAX_QUANTITY}
-              step={1}
-              value={quantity}
-              aria-invalid={errors.quantity ? true : undefined}
-              aria-describedby={errors.quantity ? 'item-quantity-error' : 'item-quantity-hint'}
-              onChange={(event) => {
-                setQuantity(event.target.value)
-                if (errors.quantity) setErrors({ ...errors, quantity: undefined })
-              }}
-            />
-          </div>
-          <div className="field item-form__category">
-            <label htmlFor="item-category">
-              Categoria <span className="optional">(opcional)</span>
-            </label>
-            <input
-              id="item-category"
-              type="text"
-              className="input"
-              value={category}
-              list="item-categories"
-              autoComplete="off"
-              placeholder="Ex.: Bebidas"
-              onChange={(event) => setCategory(event.target.value)}
-            />
-            <datalist id="item-categories">
-              {categories.map((entry) => (
-                <option key={entry} value={entry} />
-              ))}
-            </datalist>
-          </div>
-          <button type="submit" className="btn btn--primary item-form__submit">
-            <Icon name="plus" />
-            Adicionar
-          </button>
-        </div>
-        <p id="item-quantity-hint" className="hint">
-          Quantidade = quantas pessoas diferentes levam o item (cada pessoa leva no máximo uma
-          unidade).
-        </p>
-        {errors.name && (
-          <p id="item-name-error" className="field-error" role="alert">
-            <Icon name="alert" size={16} />
-            {errors.name}
-          </p>
-        )}
-        {errors.quantity && (
-          <p id="item-quantity-error" className="field-error" role="alert">
-            <Icon name="alert" size={16} />
-            {errors.quantity}
-          </p>
-        )}
-      </form>
 
       {items.length === 0 ? (
         <div className="empty">
@@ -155,6 +77,94 @@ export default function ItemsPanel({ items, onAdd, onUpdate, onRemove }: Props) 
           ))}
         </ul>
       )}
+
+      <form onSubmit={submit} noValidate className="entry-form">
+        <div className="item-entry entry-line">
+          <div className="field item-form__name">
+            <label htmlFor="item-name" className="sr-only">Novo item</label>
+            <input
+              ref={nameRef}
+              id="item-name"
+              type="text"
+              className="input"
+              value={name}
+              maxLength={MAX_NAME_LENGTH + 20}
+              autoComplete="off"
+              placeholder="O que vamos levar?"
+              aria-invalid={errors.name ? true : undefined}
+              aria-describedby={errors.name ? 'item-name-error' : undefined}
+              onChange={(event) => {
+                setName(event.target.value)
+                if (errors.name) setErrors({ ...errors, name: undefined })
+              }}
+            />
+          </div>
+          <div className="field item-form__qty">
+            <label htmlFor="item-quantity" className="sr-only">Quantidade</label>
+            <input
+              ref={quantityRef}
+              id="item-quantity"
+              title="Quantidade de pessoas"
+              type="number"
+              inputMode="numeric"
+              className="input"
+              min={1}
+              max={MAX_QUANTITY}
+              step={1}
+              value={quantity}
+              aria-invalid={errors.quantity ? true : undefined}
+              aria-describedby={errors.quantity ? 'item-quantity-error' : 'item-quantity-hint'}
+              onChange={(event) => {
+                setQuantity(event.target.value)
+                if (errors.quantity) setErrors({ ...errors, quantity: undefined })
+              }}
+            />
+          </div>
+          <button type="submit" className="btn entry-add" aria-label="Adicionar item">
+            <Icon name="plus" />
+            <span>Incluir</span>
+          </button>
+        </div>
+        <details className="disclosure entry-category">
+          <summary>Categoria opcional <Icon name="chevron" size={14} /></summary>
+          <div className="field item-form__category">
+            <label htmlFor="item-category" className="sr-only">
+              Categoria <span className="optional">(opcional)</span>
+            </label>
+            <input
+              id="item-category"
+              type="text"
+              className="input"
+              value={category}
+              list="item-categories"
+              autoComplete="off"
+              placeholder="Bebidas, comidas…"
+              onChange={(event) => setCategory(event.target.value)}
+            />
+            <datalist id="item-categories">
+              {categories.map((entry) => (
+                <option key={entry} value={entry} />
+              ))}
+            </datalist>
+          </div>
+        </details>
+        <p id="item-quantity-hint" className="hint">
+          Quantidade de pessoas que vão levar este item.
+        </p>
+        {errors.name && (
+          <p id="item-name-error" className="field-error" role="alert">
+            <Icon name="alert" size={16} />
+            {errors.name}
+          </p>
+        )}
+        {errors.quantity && (
+          <p id="item-quantity-error" className="field-error" role="alert">
+            <Icon name="alert" size={16} />
+            {errors.quantity}
+          </p>
+        )}
+      </form>
+
     </section>
   )
 }
@@ -347,6 +357,7 @@ function ItemRow({
           className="btn btn--ghost"
           onClick={startEdit}
           aria-label={`Editar ${item.name}`}
+          title={`Editar ${item.name}`}
         >
           <Icon name="pencil" />
           <span className="btn__text">Editar</span>
@@ -356,6 +367,7 @@ function ItemRow({
           className="btn btn--ghost btn--danger-text"
           onClick={() => setMode('confirm')}
           aria-label={`Excluir ${item.name}`}
+          title={`Excluir ${item.name}`}
         >
           <Icon name="trash" />
           <span className="btn__text">Excluir</span>

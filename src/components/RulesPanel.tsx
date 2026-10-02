@@ -27,9 +27,15 @@ export default function RulesPanel({
   const selected = participants.find((p) => p.id === selectedId) ?? participants[0]
 
   return (
-    <section className="panel" aria-labelledby="rules-title">
+    <section className="panel rules-panel" aria-labelledby="rules-title">
       <div className="panel__head">
-        <h2 id="rules-title">Configuração: restrições e preferências</h2>
+        <div className="panel__heading">
+          <span className="section-number" aria-hidden="true">03</span>
+          <div>
+            <h2 id="rules-title">Cada um do seu jeito</h2>
+            <p className="hint">Restrições e preferências de quem participa.</p>
+          </div>
+        </div>
       </div>
 
       {participants.length === 0 || items.length === 0 ? (
